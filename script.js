@@ -42,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     sendButton.addEventListener("click", function() {
         if (usermsg) {
-            chatDisplay.textContent = usermsg.value;
+            if (chatDisplay) {
+                chatDisplay.textContent = usermsg.value;
+            }
             usermsg.value = '';
         }
     });
@@ -52,18 +54,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let isExpanded = false;
 
-    charButton.addEventListener("mousedown", function(event) {
+    charButton.addEventListener("click", function() {
         if (isExpanded) {
-            chatbar.style.width = "130px";
-            charButton.style.left = "130px";
+            chatbar.style.width = "0px";
+            charButton.style.left = "0px"; 
             charButton.textContent = ">";
             chatbar.classList.remove('expanded');
             chatbar.classList.add('collapsed');
             charButton.classList.remove('expanded');
             charButton.classList.add('collapsed');
         } else {
-            chatbar.style.width = "179px";
-            charButton.style.left = "179px";
+            chatbar.style.width = "130px";
+            charButton.style.left = "130px";
             charButton.textContent = "<";
             chatbar.classList.remove('collapsed');
             chatbar.classList.add('expanded');
@@ -348,7 +350,7 @@ async function openRouter() {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                "Authorization": `Bearer ${openRouterKey}`,
                 "HTTP-Referer": window.location.origin,
                 "Content-Type": "application/json"
             },
@@ -367,10 +369,12 @@ async function openRouter() {
         }
 
         const result = await response.json();
+        const botmsg = document.getElementById("botmsg");
         if (result?.choices?.[0]?.message?.content) {
             botmsg.textContent = result.choices[0].message.content;
         } else {
-            throw new Error("Invalid response structure");
+            console.error("Invalid response structure:", result);
+            botmsg.textContent = "Error: Failed to get valid response from OpenRouter API";
         }
     } catch (error) {
         console.error("OpenRouter API Error:", error);
