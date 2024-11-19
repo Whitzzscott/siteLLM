@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            background-color: #343434;
+            color-scheme: dark;
+            --primary-color: #343434;
+            --secondary-color: #282828;
+            --text-color: #f0f0f0;
+            --shadow-color: rgba(0,0,0,0.2);
+            --shadow-color-hover: rgba(0,0,0,0.3);
+            --animation-timing: 0.3s ease;
+        }
+        
+        body {
+            animation: fadeIn 0.5s ease-in;
+            overflow: hidden;
+            scrollbar-width: none;
+            font-family: 'Arial', sans-serif;
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #343434;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .responsive-box {
+            height: 500px;
+            width: 750px;
+            top: 50px;
+            background-color: #282828;
+            position: absolute;
+            left: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .responsive-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .responsive-box {
+                top: 100px;
+                width: 800px;
+                left: 150px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                scrollbar-width: 0;
+                scrollbar-color: transparent transparent;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .responsive-box {
+                width: 90%;
+                left: 5%;
+                height: 500px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .responsive-box {
+                width: 100%;
+                left: 0;
+                height: 400px;
+                top: 20px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        #chatbar {
+            height: 500px;
+            width: 200px;
+            background-color: whitesmoke;
+            position: absolute;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #chatbar button {
+            border-radius: 8px;
+            left: 200px;
+            top: 220px;
+            height: 50px;
+            position: absolute;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        #chatbar button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        #chatbar.expanded {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        #chatbar.collapsed {
+            opacity: 0.5;
+            transform: translateX(-180px);
+        }
+
+        #chatbarbuttonn.expanded {
+            transform: rotate(180deg);
+        }
+
+        #chatbarbuttonn.collapsed {
+            transform: rotate(0deg);
+        }
+
+        #Header {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+            bottom: 30px;
+            left: 60px;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 10;
+            animation: titlePulse 2s infinite;
+        }
+
+        @keyframes titlePulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        .chat2 {
+            position: absolute;
+            top: 250px;
+            left: 615px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #333;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .messages-container {
+            height: 100%;
+            width: 100%;
+            overflow-y: scroll;
+            position: relative;
+            padding: 10px;
+            display: flex;
+            flex-direction: column-reverse;
+            scroll-behavior: smooth;
+        }
+
+        .chat-message {
+            position: relative;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(10px);
+        }
+
+        .chat-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-message.hide {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+      
+        button, input, select {
+            transition: all 0.3s ease;
+        }
+
+        button:hover, input:focus, select:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        
+        .fa-paper-plane {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #sendbuttoncss:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+    <h1 id="Header">SiteLLMS</h1>
+    <div class="responsive-box">
+        <input id="usermsg"type="text" style="background-color: white; color: black; position: absolute; border-radius: 8px; top: 476px; left: 250px; width: 300px;" id="chat" placeholder="Type your message here...">          
+        <div id="chatbar">
+            <button id="chatbarbuttonn"><</button>
+            <button id="Setting" style="border-radius: 8px; position: absolute; background-color: black; color: whitesmoke; left: 0; top: 1px; transition: transform 0.3s ease;"> <i class="fas fa-cog" style="transition: transform 0.3s ease;"></i> Setting</button>
+        </div>
+    </div>
+    <div>
+        <button onclick="
+            if (gptIsSelected) gpt();
+            else if (gpt4IsSelected) gpt4();
+            else if (claudeIsSelected) claude();
+            else if (openRouterIsSelected) openRouter();
+            else if (geminiIsSelected) gemini();
+            else if (llama2IsSelected) llama2();
+            else if (mistralIsSelected) mistral();
+            else if (palmIsSelected) palm();
+            else if (anthropicIsSelected) anthropic();
+            else if (falconIsSelected) falcon();
+            else if (gptNeoIsSelected) gptNeo();
+            else if (bloomIsSelected) bloom();
+            else if (optIsSelected) opt();
+            else if (dollyIsSelected) dolly();
+            else if (stablelmIsSelected) stablelm();
+            else if (pythiaIsSelected) pythia();
+            else if (vicunaIsSelected) vicuna();
+            else if (mptIsSelected) mpt();
+            else if (yiIsSelected) yi();
+            else gpt();" 
+            class="icon" id="sendbuttoncss" style="background-color: transparent; border: none; padding: 10px;  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; top: 32rem; position: absolute; left: 54rem; transition: all 0.3s ease; border-radius: 50%;
+            ">
+            <i class="fa-solid fa-paper-plane" style="color: whitesmoke; font-size: 1.2em; filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));"></i>
+        </button>
+    </div>
+    <div id="chat2" style="position: absolute; top: 250px; left: 865px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; background-color: #333;">
+        <p id="Chatp" style="color: white; margin: 0; word-wrap: break-word; text-align: right; direction:rtl;"></p>
+    </div>
+    <div id="chatbotmsg" style="position: absolute; top: 250px; left: 550px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; background-color: #333;">
+        <p id="botmsg" style="color: white; margin: 0; word-wrap: break-word; text-align: right; direction:rtl;"></p>
+    </div>
+    <script src="./script.js"></script>
+    <div id="ai-settings-panel" style="display: none;">
+        <div style="position: absolute; background-color: black; width: 500px; height: 500px; border-radius: 8px; top: 50px; left: 500px; border-radius: 8px; ">
+            <div class="ai-settings-panel">
+                <h2 style="color: white; margin: 20px; text-align: center;">AI Settings</h2>
+                
+                <div class="settings-group" style="padding: 20px;">
+                    <div class="setting-item" style="margin-bottom: 20px;">
+                        <label style="color: white; display: block; margin-bottom: 8px;">AI Model</label>
+                        <select id="ai-model" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                            <option value="gpt-3.5">Openai/GPT-3.5</option>
+                            <option value="gpt-4">Openai/GPT-4</option>
+                            <option value="claude">Claude</option>
+                            <option value="Openrouter">Openrouter/toppy</option>
+                            <option value="llama2">Meta/Llama2</option>
+                            <option value="mistral">Mistral AI</option>
+                            <option value="palm">Google/PaLM</option>
+                            <option value="anthropic">Anthropic/Claude 2</option>
+                            <option value="falcon">TII/Falcon</option> //never add cohere
+                            <option value="gpt-neo">EleutherAI/GPT-Neo</option>
+                            <option value="bloom">BigScience/BLOOM</option>
+                            <option value="opt">Meta/OPT</option>
+                            <option value="dolly">Databricks/Dolly</option>
+                            <option value="stablelm">Stability AI/StableLM</option>
+                            <option value="pythia">EleutherAI/Pythia</option>
+                            <option value="vicuna">LMSYS/Vicuna</option>
+                            <option value="mpt">MosaicML/MPT</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item" style="margin-bottom: 20px;">
+                        <label style="color: white; display: block; margin-bottom: 8px;">Temperature</label>
+                        <input type="range" id="temperature" min="0" max="100" value="70" style="width: 100%; background: #333;" oninput="document.getElementById('temp-value').textContent = (this.value / 100).toFixed(1)">
+                        <span id="temp-value" style="color: white; display: block; text-align: right;">0.7</span>
+                    </div>
+
+                    <div class="setting-item" style="margin-bottom: 20px;">
+                        <label style="color: white; display: block; margin-bottom: 8px;">Max Response Length</label>
+                        <input id="setting-max-length" type="number" id="max-length" value="2048" min="1" max="4096" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                    </div>
+
+                    <div class="setting-item">
+                        <label style="color: white; display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="memory-enabled" checked>
+                            Enable Context Limit
+                        </label>
+                    </div>
+                </div>
+                <button id="api-settings-button" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 20px;">
+                    API Settings
+                </button>
+
+                <div id="api-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000;">
+                    <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.5rem; font-weight: 500;">API Settings</h2>
+                    
+                    <div class="settings-group" style="padding: 20px;">
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <label style="color: white; display: block; margin-bottom: 8px;">OpenAI API Key</label>
+                            <input type="password" id="openai-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                        </div>
+
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <label style="color: white; display: block; margin-bottom: 8px;">Claude API Key</label>
+                            <input type="password" id="claude-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                        </div>
+
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <label style="color: white; display: block; margin-bottom: 8px;">OpenRouter API Key</label>
+                            <input type="password" id="openrouter-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                        </div>
+                        
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <label style="color: white; display: block; margin-bottom: 8px;">Model Customization</label>
+                            <select id="model-preset" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                <option value="creative">Creative</option>
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="precise">Precise</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <label style="color: white; display: block; margin-bottom: 8px;">Response Style</label>
+                            <select id="response-style" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                <option value="concise">Concise</option>
+                                <option value="detailed" selected>Detailed</option>
+                                <option value="technical">Technical</option>
+                                <option value="casual">Casual</option>
+                            </select>
+                        </div>
+
+                        <div style="text-align: center;">
+                            <button id="save-api-settings" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                                Save API Settings
+                            </button>
+                        </div>
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <button id="close-api-settings" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;" onclick="document.getElementById('api-settings-panel').style.display='none'">
+                                Close
+                            </button>
+                        </div>
+                        
+                        <div class="setting-item" style="margin-bottom: 20px;">
+                            <button id="advanced-settings-button" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">
+                                Advanced Settings
+                            </button>
+                        </div>
+
+                        <div id="advanced-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001;">
+                            <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.5rem; font-weight: 500;">Advanced Settings</h2>
+                            <div class="settings-group" style="padding: 20px;">
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Llama2 API Key</label>
+                                    <input type="password" id="llama2-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Mistral API Key</label>
+                                    <input type="password" id="mistral-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Google PaLM API Key</label>
+                                    <input type="password" id="palm-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Anthropic API Key</label>
+                                    <input type="password" id="anthropic-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Falcon API Key</label>
+                                    <input type="password" id="falcon-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">GPT-Neo API Key</label>
+                                    <input type="password" id="gptneo-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">BLOOM API Key</label>
+                                    <input type="password" id="bloom-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">OPT API Key</label>
+                                    <input type="password" id="opt-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Dolly API Key</label>
+                                    <input type="password" id="dolly-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">StableLM API Key</label>
+                                    <input type="password" id="stablelm-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Pythia API Key</label>
+                                    <input type="password" id="pythia-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">Vicuna API Key</label>
+                                    <input type="password" id="vicuna-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+        
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px;">MPT API Key</label>
+                                    <input type="password" id="mpt-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
+                                </div>
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <button id="close-advanced-settings" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            document.getElementById("advanced-settings-button").addEventListener("click", function() {
+                                document.getElementById("advanced-settings-panel").style.display = "block";
+                            });
+                            
+                            document.getElementById("close-advanced-settings").addEventListener("click", function() {
+                                document.getElementById("advanced-settings-panel").style.display = "none";
+                            });
+                        </script>
+                    </div>
+                </div>
+                <script>
+                document.getElementById("api-settings-button").addEventListener("click", function() {
+                    const panel = document.getElementById("api-settings-panel");
+                    panel.style.display = panel.style.display === "none" ? "block" : "none";
+                });
+                </script>
+                <div style="padding: 20px; text-align: center;">
+                    <button id="save-settings" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
