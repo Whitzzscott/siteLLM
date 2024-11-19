@@ -18,7 +18,7 @@
         }
         
         body {
-            animation: fadeIn 0.5s ease-in;
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             scrollbar-width: none;
             font-family: 'Arial', sans-serif;
@@ -34,8 +34,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .responsive-box {
@@ -48,37 +54,24 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             border-radius: 8px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            animation: slideIn 0.5s ease-out, glow 2s infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: boxAppear 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes slideIn {
+        @keyframes boxAppear {
             from {
-                transform: translateY(-20px);
                 opacity: 0;
+                transform: scale(0.9) translateY(30px);
             }
             to {
-                transform: translateY(0);
                 opacity: 1;
+                transform: scale(1) translateY(0);
             }
-        }
-
-        @keyframes glow {
-            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-            50% { box-shadow: 0 4px 25px rgba(100,100,255,0.4); }
-            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         }
 
         .responsive-box:hover {
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateY(-5px) rotate(0deg); }
-            25% { transform: translateY(-5px) rotate(0.5deg); }
-            75% { transform: translateY(-5px) rotate(-0.5deg); }
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
         @media (max-width: 1024px) {
@@ -87,16 +80,10 @@
                 width: 800px;
                 left: 150px;
                 border-radius: 8px;
-                transition: all 0.3s ease;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 scrollbar-width: 0;
                 scrollbar-color: transparent transparent;
-                animation: slideFromRight 0.5s ease-out;
             }
-        }
-
-        @keyframes slideFromRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -105,14 +92,8 @@
                 left: 5%;
                 height: 500px;
                 border-radius: 8px;
-                transition: all 0.3s ease;
-                animation: popIn 0.5s ease-out;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
-        }
-
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         @media (max-width: 480px) {
@@ -122,30 +103,45 @@
                 height: 400px;
                 top: 20px;
                 border-radius: 8px;
-                transition: all 0.3s ease;
-                animation: slideUp 0.5s ease-out;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .responsive-box {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         #chatbar {
+            animation: slideIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             height: 500px;
             width: 200px;
             background-color: whitesmoke;
             position: absolute;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             border-radius: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInLeft 0.5s ease-out;
-        }
-
-        @keyframes fadeInLeft {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #chatbar button {
@@ -155,99 +151,59 @@
             height: 50px;
             position: absolute;
             user-select: none;
-            transition: all 0.3s ease;
-            animation: bounceIn 0.5s ease-out;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #chatbar button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            animation: wiggle 0.5s ease-in-out;
-        }
-
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(3deg); }
-            75% { transform: rotate(-3deg); }
+            transform: scale(1.1) rotate(5deg);
         }
 
         #chatbar.expanded {
             opacity: 1;
-            transform: translateX(0);
-            animation: expandWidth 0.3s ease-out;
-        }
-
-        @keyframes expandWidth {
-            from { width: 0; }
-            to { width: 200px; }
+            transform: translateX(0) scale(1);
         }
 
         #chatbar.collapsed {
             opacity: 0.5;
-            transform: translateX(-180px);
-            animation: collapseWidth 0.3s ease-in;
-        }
-
-        @keyframes collapseWidth {
-            from { width: 200px; }
-            to { width: 0; }
+            transform: translateX(-180px) scale(0.95);
         }
 
         #chatbarbuttonn.expanded {
-            transform: rotate(180deg);
-            animation: spinExpand 0.3s ease-out;
-        }
-
-        @keyframes spinExpand {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(180deg); }
+            transform: rotate(180deg) scale(1.1);
         }
 
         #chatbarbuttonn.collapsed {
             transform: rotate(0deg);
-            animation: spinCollapse 0.3s ease-out;
-        }
-
-        @keyframes spinCollapse {
-            from { transform: rotate(180deg); }
-            to { transform: rotate(0deg); }
         }
 
         #Header {
             color: white;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
             position: relative;
             bottom: 30px;
-            left: 60px;
+            left: 50px;
             transform: translateX(-50%);
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 15px 30px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4),
+                        0 2px 4px rgba(255,255,255,0.1);
             text-align: center;
             z-index: 10;
-            animation: titlePulse 2s infinite, rainbow 5s infinite;
+            animation: headerPulse 3s ease-in-out infinite;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes titlePulse {
+        @keyframes headerPulse {
             0% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
+            50% { transform: translateX(-50%) scale(1.05); filter: brightness(1.2); }
             100% { transform: translateX(-50%) scale(1); }
-        }
-
-        @keyframes rainbow {
-            0% { text-shadow: 0 0 10px rgba(255,0,0,0.5); }
-            33% { text-shadow: 0 0 10px rgba(0,255,0,0.5); }
-            66% { text-shadow: 0 0 10px rgba(0,0,255,0.5); }
-            100% { text-shadow: 0 0 10px rgba(255,0,0,0.5); }
         }
 
         .chat2 {
@@ -258,25 +214,19 @@
             border-radius: 8px;
             padding: 10px;
             background-color: #333;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.5s ease-out, float 3s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: chatAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes fadeInUp {
+        @keyframes chatAppear {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: scale(0.9) translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1) translateY(0);
             }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
         }
 
         .messages-container {
@@ -288,7 +238,6 @@
             display: flex;
             flex-direction: column-reverse;
             scroll-behavior: smooth;
-            animation: fadeIn 0.5s ease-out;
         }
 
         .chat-message {
@@ -299,85 +248,41 @@
             color: white;
             border-radius: 8px;
             border: 1px solid #ccc;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(10px);
-            animation: messageSlide 0.3s ease-out forwards;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: messageIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes messageSlide {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .chat-message.show {
-            opacity: 1;
-            transform: translateY(0);
-            animation: popMessage 0.3s ease-out;
-        }
-
-        @keyframes popMessage {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .chat-message.hide {
-            opacity: 0;
-            transform: translateY(-5px);
-            animation: fadeOut 0.3s ease-in;
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-5px); }
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         button, input, select {
-            transition: all 0.3s ease;
-            animation: buttonPop 0.3s ease-out;
-        }
-
-        @keyframes buttonPop {
-            0% { transform: scale(0.9); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         button:hover, input:focus, select:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            animation: hover 1s ease-in-out infinite;
-        }
-
-        @keyframes hover {
-            0%, 100% { transform: translateY(-2px); }
-            50% { transform: translateY(-4px); }
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
 
         .fa-paper-plane {
-            animation: pulse 2s infinite, spin 4s linear infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .fa-paper-plane:hover {
+            transform: scale(1.2) rotate(15deg);
         }
 
         #sendbuttoncss:hover {
-            background-color: rgba(255,255,255,0.1);
-            animation: ripple 0.8s linear;
-        }
-
-        @keyframes ripple {
-            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
-            100% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+            background-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -389,30 +294,176 @@
           }
         }
     </script>
+    <div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column;">
+        <div class="loading-logo" style="margin-bottom: 30px; user-select: none;">
+            <img src="logo.png" alt="Logo" style="width: 120px; height: 120px; animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite;">
+        </div>
+        <div class="loading-text" style="user-select: none; color: #4CAF50; font-size: 28px; margin-bottom: 25px; font-family: 'Segoe UI', Arial, sans-serif; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 10px rgba(76, 175, 80, 0.5); animation: pulse 1.5s ease-in-out infinite, slideIn 1s ease-out;">
+            Loading...
+        </div>
+        <div class="loading-subtext" style="user-select: none; color: #81C784; font-size: 16px; margin-bottom: 30px; font-family: 'Segoe UI', Arial, sans-serif; letter-spacing: 1px; animation: fade 2s ease-in-out infinite, slideIn 1s ease-out 0.3s;">
+            Preparing your experience...
+        </div>
+        <div class="loading-bar" style="width: 350px; height: 25px; background-color: rgba(51, 51, 51, 0.7); border-radius: 25px; overflow: hidden; box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); border: 2px solid rgba(76, 175, 80, 0.3); animation: expand 0.5s ease-out;">
+            <div id="loading-progress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4CAF50, #81C784, #4CAF50); background-size: 200% 100%; transition: width 0.5s ease; animation: glow 2s ease-in-out infinite, gradient 3s linear infinite, pulse-width 2s ease-in-out infinite;"></div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.98); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.6); filter: brightness(1); }
+            50% { box-shadow: 0 0 30px rgba(76, 175, 80, 0.9); filter: brightness(1.2); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(5px); }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes expand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        @keyframes pulse-width {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(0.98); }
+        }
+    </style>
+
+    <script>
+        if (!sessionStorage.getItem('hasLoaded')) {
+            document.addEventListener("DOMContentLoaded", function() {
+                const loadingOverlay = document.getElementById("loading-overlay");
+                const loadingProgress = document.getElementById("loading-progress");
+                let progress = 0;
+
+                const loadingInterval = setInterval(() => {
+                    progress += 1;
+                    const easedProgress = easeProgress(progress);
+                    loadingProgress.style.width = `${easedProgress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(loadingInterval);
+                        loadingOverlay.style.transition = "all 1.2s cubic-bezier(0.4, 0, 0.2, 1)";
+                        loadingOverlay.style.opacity = "0";
+                        loadingOverlay.style.transform = "scale(1.2) rotate(5deg)";
+                        setTimeout(() => {
+                            loadingOverlay.style.display = "none";
+                        }, 1200);
+                    }
+                }, 35);
+
+                const easeProgress = (progress) => {
+                    return progress < 50 ? 2 * progress : 200 - (2 * progress);
+                }
+
+                sessionStorage.setItem('hasLoaded', 'true');
+            });
+        } else {
+            document.addEventListener("DOMContentLoaded", function() {
+                const loadingOverlay = document.getElementById("loading-overlay");
+                if (loadingOverlay) {
+                    loadingOverlay.style.display = "none";
+                }
+            });
+        }
+    </script>
     <h1 id="Header">SiteLLMS</h1>
     <div class="responsive-box">
         <div id="chat-sidebar" style="position: absolute; left: 0; top: 50px; width: 200px; height: 80vh; background-color: #333; border-radius: 8px; overflow-y: auto; padding: 10px; box-shadow: 2px 0 10px rgba(0,0,0,0.2); border: 1px solid #444;">
         </div>
-        <input id="usermsg" type="text" style="background-color: white; color: black; position: absolute; border-radius: 8px; top: 476px; left: 250px; width: 300px;" placeholder="Type your message here..." required minlength="1" onkeydown="if(event.key === 'Enter') {
-            if (gptIsSelected) gpt();
-            else if (gpt4IsSelected) gpt4();
-            else if (claudeIsSelected) claude();
-            else if (openRouterIsSelected) openRouter();
-            else if (llama2IsSelected) llama2();
-            else if (mistralIsSelected) mistral();
-            else if (palmIsSelected) palm();
-            else if (anthropicIsSelected) anthropic();
-            else if (falconIsSelected) falcon();
-            else if (gptNeoIsSelected) gptNeo();
-            else if (bloomIsSelected) bloom();
-            else if (optIsSelected) opt();
-            else if (dollyIsSelected) dolly();
-            else if (stablelmIsSelected) stablelm();
-            else if (pythiaIsSelected) pythia();
-            else if (vicunaIsSelected) vicuna();
-            else if (mptIsSelected) mpt();
-            else gpt();
-        }">
+        <input id="usermsg" type="text" 
+            style="
+                background-color: #2b2b2b;
+                color: #ffffff;
+                position: absolute;
+                border-radius: 12px;
+                top: 453px;
+                left: 250px;
+                width: 300px;
+                padding: 12px 16px;
+                font-size: 14px;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                outline: none;
+                animation: inputFadeIn 0.6s ease-out, typing 1s steps(20) infinite;
+            "
+            placeholder="Type your message here..."
+            required 
+            minlength="1"
+            onkeydown="if(event.key === 'Enter') {
+                if (gptIsSelected) gpt();
+                else if (gpt4IsSelected) gpt4();
+                else if (claudeIsSelected) claude();
+                else if (openRouterIsSelected) openRouter();
+                else if (llama2IsSelected) llama2();
+                else if (mistralIsSelected) mistral();
+                else if (palmIsSelected) palm();
+                else if (anthropicIsSelected) anthropic();
+                else if (falconIsSelected) falcon();
+                else if (gptNeoIsSelected) gptNeo();
+                else if (bloomIsSelected) bloom();
+                else if (optIsSelected) opt();
+                else if (dollyIsSelected) dolly();
+                else if (stablelmIsSelected) stablelm();
+                else if (pythiaIsSelected) pythia();
+                else if (vicunaIsSelected) vicuna();
+                else if (mptIsSelected) mpt();
+                else gpt();
+            }"
+        >
+        <style>
+            @keyframes inputFadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes typing {
+                0% { border-right-color: rgba(255,255,255,0.8); }
+                50% { border-right-color: transparent; }
+                100% { border-right-color: rgba(255,255,255,0.8); }
+            }
+            #usermsg:focus {
+                transform: scale(1.02);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                border-color: rgba(255,255,255,0.2);
+            }
+            #usermsg::placeholder {
+                color: rgba(255,255,255,0.5);
+                transition: all 0.3s ease;
+            }
+            #usermsg:focus::placeholder {
+                opacity: 0.7;
+                transform: translateX(5px);
+            }
+        </style>
         <div id="chatbar">
             <button id="chatbarbuttonn"><</button>
             <button id="Setting" style="border-radius: 8px; position: absolute; background-color: black; color: whitesmoke; left: 0; top: 1px; transition: transform 0.3s ease;"> <i class="fas fa-cog" style="transition: transform 0.3s ease;"></i> Setting</button>
@@ -439,22 +490,91 @@
             else if (vicunaIsSelected) vicuna();
             else if (mptIsSelected) mpt();
             else gpt();" 
-            class="icon" id="sendbuttoncss" style="background-color: transparent; border: none; padding: 10px;  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; top: 32rem; position: absolute; left: 54rem; transition: all 0.3s ease; border-radius: 50%;
+            class="icon" 
+            id="sendbuttoncss" 
+            style="
+                background-color: transparent;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                top: 32rem;
+                position: absolute;
+                left: 56rem;
+                transition: all 0.3s ease;
+                border-radius: 50%;
+                box-shadow: 0 2px 8px rgba(0,255,136,0.2);
+                backdrop-filter: blur(4px);
             ">
-            <i class="fa-solid fa-paper-plane" style="color: whitesmoke; font-size: 1.2em; filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));"></i>
+            <i class="fa-solid fa-paper-plane" style="
+                color: whitesmoke;
+                font-size: 1.2em;
+                filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));
+                transition: transform 0.2s ease;
+            "></i>
         </button>
     </div>
-    <div id="chat-container" style="position: absolute; top: 250px; left: 550px; width: 400px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column;">
+    <div id="chat-container" style="position: absolute; top: 100px; left: 550px; width: 400px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column;">
         <div id="messages"></div>
         <div id="botmsg" style="display: none; color: white; padding: 10px; border-radius: 8px; background-color: #444; margin: 5px; max-width: 70%; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; position: relative;">
             <span style="position: absolute; top: 2px; right: 5px; font-size: 0.8em; color: #aaa;"></span>
         </div>
+        <div id="typing-indicator" style="display: none; color: white; padding: 10px; border-radius: 8px; background-color: #444; margin: 5px; max-width: 70%; align-self: flex-start;">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </div>
+    <style>
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes typingDot {
+            0%, 20% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            80%, 100% { transform: translateY(0); }
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+            animation: typingDot 1s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    </style>
     <script>
         const messagesContainer = document.getElementById('messages');
         const sendButton = document.getElementById('sendbuttoncss');
         const userInput = document.getElementById('usermsg');
         const botmsgElement = document.getElementById('botmsg');
+        const typingIndicator = document.getElementById('typing-indicator');
 
         function createMessageBubble(text, isUser) {
             const bubble = document.createElement('div');
@@ -468,15 +588,14 @@
                 max-width: 70%;
                 word-wrap: break-word;
                 align-self: ${isUser ? 'flex-end' : 'flex-start'};
-                transform: translateY(${isUser ? '-5px' : '5px'});
-                transition: transform 0.3s ease;
+                animation: messageSlideIn 0.3s ease forwards;
             `;
             
             bubble.textContent = text;
             return bubble;
         }
 
-        function handleSendMessage() {
+        async function handleSendMessage() {
             const userMessage = userInput.value.trim();
             if (!userMessage) {
                 return;
@@ -486,44 +605,41 @@
             messagesContainer.appendChild(userBubble);
             userInput.value = '';
             
-            if (gptIsSelected) gpt();
-            else if (gpt4IsSelected) gpt4();
-            else if (claudeIsSelected) claude();
-            else if (openRouterIsSelected) openRouter();
-            else if (llama2IsSelected) llama2();
-            else if (mistralIsSelected) mistral();
-            else if (palmIsSelected) palm();
-            else if (anthropicIsSelected) anthropic();
-            else if (falconIsSelected) falcon();
-            else if (gptNeoIsSelected) gptNeo();
-            else if (bloomIsSelected) bloom();
-            else if (optIsSelected) opt();
-            else if (dollyIsSelected) dolly();
-            else if (stablelmIsSelected) stablelm();
-            else if (pythiaIsSelected) pythia();
-            else if (vicunaIsSelected) vicuna();
-            else if (mptIsSelected) mpt();
-            else gpt();
+            typingIndicator.style.display = 'block';
+            typingIndicator.scrollIntoView({ behavior: 'smooth' });
 
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'characterData' || mutation.type === 'childList') {
-                        const botResponse = botmsgElement.textContent;
-                        if (botResponse && botResponse.trim()) {
-                            const botBubble = createMessageBubble('Bot: ' + botResponse, false);
-                            messagesContainer.appendChild(botBubble);
-                            botBubble.scrollIntoView({ behavior: 'smooth' });
-                        }
-                        observer.disconnect();
-                    }
-                });
-            });
+            try {
+                if (gptIsSelected) await gpt();
+                else if (gpt4IsSelected) await gpt4();
+                else if (claudeIsSelected) await claude();
+                else if (openRouterIsSelected) await openRouter();
+                else if (llama2IsSelected) await llama2();
+                else if (mistralIsSelected) await mistral();
+                else if (palmIsSelected) await palm();
+                else if (anthropicIsSelected) await anthropic();
+                else if (falconIsSelected) await falcon();
+                else if (gptNeoIsSelected) await gptNeo();
+                else if (bloomIsSelected) await bloom();
+                else if (optIsSelected) await opt();
+                else if (dollyIsSelected) await dolly();
+                else if (stablelmIsSelected) await stablelm();
+                else if (pythiaIsSelected) await pythia();
+                else if (vicunaIsSelected) await vicuna();
+                else if (mptIsSelected) await mpt();
+                else await gpt();
 
-            observer.observe(botmsgElement, {
-                characterData: true,
-                childList: true,
-                subtree: true
-            });
+                typingIndicator.style.display = 'none';
+
+                const botResponse = botmsgElement.textContent;
+                if (botResponse && botResponse.trim()) {
+                    const botBubble = createMessageBubble('Bot: ' + botResponse, false);
+                    messagesContainer.appendChild(botBubble);
+                    botBubble.scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                typingIndicator.style.display = 'none';
+            }
         }
 
         sendButton.addEventListener('click', handleSendMessage);
