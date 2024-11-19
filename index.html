@@ -49,7 +49,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s ease;
-            animation: slideIn 0.5s ease-out;
+            animation: slideIn 0.5s ease-out, glow 2s infinite;
         }
 
         @keyframes slideIn {
@@ -63,9 +63,22 @@
             }
         }
 
+        @keyframes glow {
+            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+            50% { box-shadow: 0 4px 25px rgba(100,100,255,0.4); }
+            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        }
+
         .responsive-box:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.01);
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateY(-5px) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(0.5deg); }
+            75% { transform: translateY(-5px) rotate(-0.5deg); }
         }
 
         @media (max-width: 1024px) {
@@ -77,7 +90,13 @@
                 transition: all 0.3s ease;
                 scrollbar-width: 0;
                 scrollbar-color: transparent transparent;
+                animation: slideFromRight 0.5s ease-out;
             }
+        }
+
+        @keyframes slideFromRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -87,7 +106,13 @@
                 height: 500px;
                 border-radius: 8px;
                 transition: all 0.3s ease;
+                animation: popIn 0.5s ease-out;
             }
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         @media (max-width: 480px) {
@@ -98,7 +123,13 @@
                 top: 20px;
                 border-radius: 8px;
                 transition: all 0.3s ease;
+                animation: slideUp 0.5s ease-out;
             }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         #chatbar {
@@ -109,6 +140,12 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             border-radius: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInLeft 0.5s ease-out;
+        }
+
+        @keyframes fadeInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         #chatbar button {
@@ -119,29 +156,67 @@
             position: absolute;
             user-select: none;
             transition: all 0.3s ease;
+            animation: bounceIn 0.5s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         #chatbar button:hover {
             transform: scale(1.05);
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            75% { transform: rotate(-3deg); }
         }
 
         #chatbar.expanded {
             opacity: 1;
             transform: translateX(0);
+            animation: expandWidth 0.3s ease-out;
+        }
+
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 200px; }
         }
 
         #chatbar.collapsed {
             opacity: 0.5;
             transform: translateX(-180px);
+            animation: collapseWidth 0.3s ease-in;
+        }
+
+        @keyframes collapseWidth {
+            from { width: 200px; }
+            to { width: 0; }
         }
 
         #chatbarbuttonn.expanded {
             transform: rotate(180deg);
+            animation: spinExpand 0.3s ease-out;
+        }
+
+        @keyframes spinExpand {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(180deg); }
         }
 
         #chatbarbuttonn.collapsed {
             transform: rotate(0deg);
+            animation: spinCollapse 0.3s ease-out;
+        }
+
+        @keyframes spinCollapse {
+            from { transform: rotate(180deg); }
+            to { transform: rotate(0deg); }
         }
 
         #Header {
@@ -159,13 +234,20 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             text-align: center;
             z-index: 10;
-            animation: titlePulse 2s infinite;
+            animation: titlePulse 2s infinite, rainbow 5s infinite;
         }
 
         @keyframes titlePulse {
             0% { transform: translateX(-50%) scale(1); }
             50% { transform: translateX(-50%) scale(1.05); }
             100% { transform: translateX(-50%) scale(1); }
+        }
+
+        @keyframes rainbow {
+            0% { text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+            33% { text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+            66% { text-shadow: 0 0 10px rgba(0,0,255,0.5); }
+            100% { text-shadow: 0 0 10px rgba(255,0,0,0.5); }
         }
 
         .chat2 {
@@ -177,7 +259,7 @@
             padding: 10px;
             background-color: #333;
             transition: all 0.3s ease;
-            animation: fadeInUp 0.5s ease-out;
+            animation: fadeInUp 0.5s ease-out, float 3s ease-in-out infinite;
         }
 
         @keyframes fadeInUp {
@@ -191,6 +273,12 @@
             }
         }
 
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
         .messages-container {
             height: 100%;
             width: 100%;
@@ -200,6 +288,7 @@
             display: flex;
             flex-direction: column-reverse;
             scroll-behavior: smooth;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .chat-message {
@@ -213,31 +302,61 @@
             opacity: 0;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(10px);
+            animation: messageSlide 0.3s ease-out forwards;
+        }
+
+        @keyframes messageSlide {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .chat-message.show {
             opacity: 1;
             transform: translateY(0);
+            animation: popMessage 0.3s ease-out;
+        }
+
+        @keyframes popMessage {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .chat-message.hide {
             opacity: 0;
             transform: translateY(-5px);
+            animation: fadeOut 0.3s ease-in;
         }
 
-      
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-5px); }
+        }
+
         button, input, select {
             transition: all 0.3s ease;
+            animation: buttonPop 0.3s ease-out;
+        }
+
+        @keyframes buttonPop {
+            0% { transform: scale(0.9); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         button:hover, input:focus, select:focus {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: hover 1s ease-in-out infinite;
         }
 
-        
+        @keyframes hover {
+            0%, 100% { transform: translateY(-2px); }
+            50% { transform: translateY(-4px); }
+        }
+
         .fa-paper-plane {
-            animation: pulse 2s infinite;
+            animation: pulse 2s infinite, spin 4s linear infinite;
         }
 
         @keyframes pulse {
@@ -246,8 +365,19 @@
             100% { transform: scale(1); }
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         #sendbuttoncss:hover {
             background-color: rgba(255,255,255,0.1);
+            animation: ripple 0.8s linear;
+        }
+
+        @keyframes ripple {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+            100% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
         }
     </style>
 </head>
@@ -261,19 +391,13 @@
     </script>
     <h1 id="Header">SiteLLMS</h1>
     <div class="responsive-box">
-        <input id="usermsg"type="text" style="background-color: white; color: black; position: absolute; border-radius: 8px; top: 476px; left: 250px; width: 300px;" id="chat" placeholder="Type your message here...">          
-        <div id="chatbar">
-            <button id="chatbarbuttonn"><</button>
-            <button id="Setting" style="border-radius: 8px; position: absolute; background-color: black; color: whitesmoke; left: 0; top: 1px; transition: transform 0.3s ease;"> <i class="fas fa-cog" style="transition: transform 0.3s ease;"></i> Setting</button>
+        <div id="chat-sidebar" style="position: absolute; left: 0; top: 50px; width: 200px; height: 80vh; background-color: #333; border-radius: 8px; overflow-y: auto; padding: 10px; box-shadow: 2px 0 10px rgba(0,0,0,0.2); border: 1px solid #444;">
         </div>
-    </div>
-    <div>
-        <button onclick="
+        <input id="usermsg" type="text" style="background-color: white; color: black; position: absolute; border-radius: 8px; top: 476px; left: 250px; width: 300px;" placeholder="Type your message here..." required minlength="1" onkeydown="if(event.key === 'Enter') {
             if (gptIsSelected) gpt();
             else if (gpt4IsSelected) gpt4();
             else if (claudeIsSelected) claude();
             else if (openRouterIsSelected) openRouter();
-            else if (geminiIsSelected) gemini();
             else if (llama2IsSelected) llama2();
             else if (mistralIsSelected) mistral();
             else if (palmIsSelected) palm();
@@ -287,19 +411,129 @@
             else if (pythiaIsSelected) pythia();
             else if (vicunaIsSelected) vicuna();
             else if (mptIsSelected) mpt();
-            else if (yiIsSelected) yi();
+            else gpt();
+        }">
+        <div id="chatbar">
+            <button id="chatbarbuttonn"><</button>
+            <button id="Setting" style="border-radius: 8px; position: absolute; background-color: black; color: whitesmoke; left: 0; top: 1px; transition: transform 0.3s ease;"> <i class="fas fa-cog" style="transition: transform 0.3s ease;"></i> Setting</button>
+            <button id="Discord" onclick="window.location.href='https://test'" style="border-radius: 8px; position: absolute; background-color: #5865F2; color: whitesmoke; left: 100px; top: 1px; transition: transform 0.3s ease;"><i class="fab fa-discord" style="transition: transform 0.3s ease;"></i> Discord</button>
+        </div>
+    </div>
+    <div>
+        <button onclick="
+            if (gptIsSelected) gpt();
+            else if (gpt4IsSelected) gpt4();
+            else if (claudeIsSelected) claude();
+            else if (openRouterIsSelected) openRouter();
+            else if (llama2IsSelected) llama2();
+            else if (mistralIsSelected) mistral();
+            else if (palmIsSelected) palm();
+            else if (anthropicIsSelected) anthropic();
+            else if (falconIsSelected) falcon();
+            else if (gptNeoIsSelected) gptNeo();
+            else if (bloomIsSelected) bloom();
+            else if (optIsSelected) opt();
+            else if (dollyIsSelected) dolly();
+            else if (stablelmIsSelected) stablelm();
+            else if (pythiaIsSelected) pythia();
+            else if (vicunaIsSelected) vicuna();
+            else if (mptIsSelected) mpt();
             else gpt();" 
             class="icon" id="sendbuttoncss" style="background-color: transparent; border: none; padding: 10px;  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; top: 32rem; position: absolute; left: 54rem; transition: all 0.3s ease; border-radius: 50%;
             ">
             <i class="fa-solid fa-paper-plane" style="color: whitesmoke; font-size: 1.2em; filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));"></i>
         </button>
     </div>
-    <div id="chat2" style="position: absolute; top: 250px; left: 865px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; background-color: #333;">
-        <p id="Chatp" style="color: white; margin: 0; word-wrap: break-word; text-align: right; direction:rtl;"></p>
+    <div id="chat-container" style="position: absolute; top: 250px; left: 550px; width: 400px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column;">
+        <div id="messages"></div>
+        <div id="botmsg" style="display: none; color: white; padding: 10px; border-radius: 8px; background-color: #444; margin: 5px; max-width: 70%; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; position: relative;">
+            <span style="position: absolute; top: 2px; right: 5px; font-size: 0.8em; color: #aaa;"></span>
+        </div>
     </div>
-    <div id="chatbotmsg" style="position: absolute; top: 250px; left: 550px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; background-color: #333;">
-        <p id="botmsg" style="color: white; margin: 0; word-wrap: break-word; text-align: right; direction:rtl;"></p>
-    </div>
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        const sendButton = document.getElementById('sendbuttoncss');
+        const userInput = document.getElementById('usermsg');
+        const botmsgElement = document.getElementById('botmsg');
+
+        function createMessageBubble(text, isUser) {
+            const bubble = document.createElement('div');
+            bubble.style.cssText = `
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 10px;
+                background-color: ${isUser ? '#333' : '#444'};
+                color: white;
+                margin: 5px;
+                max-width: 70%;
+                word-wrap: break-word;
+                align-self: ${isUser ? 'flex-end' : 'flex-start'};
+                transform: translateY(${isUser ? '-5px' : '5px'});
+                transition: transform 0.3s ease;
+            `;
+            
+            bubble.textContent = text;
+            return bubble;
+        }
+
+        function handleSendMessage() {
+            const userMessage = userInput.value.trim();
+            if (!userMessage) {
+                return;
+            }
+
+            const userBubble = createMessageBubble('You: ' + userMessage, true);
+            messagesContainer.appendChild(userBubble);
+            userInput.value = '';
+            
+            if (gptIsSelected) gpt();
+            else if (gpt4IsSelected) gpt4();
+            else if (claudeIsSelected) claude();
+            else if (openRouterIsSelected) openRouter();
+            else if (llama2IsSelected) llama2();
+            else if (mistralIsSelected) mistral();
+            else if (palmIsSelected) palm();
+            else if (anthropicIsSelected) anthropic();
+            else if (falconIsSelected) falcon();
+            else if (gptNeoIsSelected) gptNeo();
+            else if (bloomIsSelected) bloom();
+            else if (optIsSelected) opt();
+            else if (dollyIsSelected) dolly();
+            else if (stablelmIsSelected) stablelm();
+            else if (pythiaIsSelected) pythia();
+            else if (vicunaIsSelected) vicuna();
+            else if (mptIsSelected) mpt();
+            else gpt();
+
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'characterData' || mutation.type === 'childList') {
+                        const botResponse = botmsgElement.textContent;
+                        if (botResponse && botResponse.trim()) {
+                            const botBubble = createMessageBubble('Bot: ' + botResponse, false);
+                            messagesContainer.appendChild(botBubble);
+                            botBubble.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        observer.disconnect();
+                    }
+                });
+            });
+
+            observer.observe(botmsgElement, {
+                characterData: true,
+                childList: true,
+                subtree: true
+            });
+        }
+
+        sendButton.addEventListener('click', handleSendMessage);
+        
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+    </script>
     <script src="./script.js"></script>
     <div id="ai-settings-panel" style="display: none;">
         <div style="position: absolute; background-color: black; width: 500px; height: 500px; border-radius: 8px; top: 50px; left: 500px; border-radius: 8px; ">
