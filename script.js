@@ -104,6 +104,7 @@ let stablelmIsSelected = false;
 let pythiaIsSelected = false;
 let vicunaIsSelected = false;
 let mptIsSelected = false;
+let chatgptFreeIsSelected = false;
 
 document.addEventListener("DOMContentLoaded", function() {
     const saveSettings = document.getElementById("save-settings");
@@ -130,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
         pythiaIsSelected = false;
         vicunaIsSelected = false;
         mptIsSelected = false;
-
+        chatgptFreeIsSelected = false;
         switch(selectedValue) {
             case "gpt-3.5":
                 gptIsSelected = true;
@@ -186,6 +187,9 @@ document.addEventListener("DOMContentLoaded", function() {
             case "mpt":
                 mptIsSelected = true;
                 break;
+            case "chatgpt-free":
+                chatgptFreeIsSelected = true;
+                break;
         }
     }); 
 
@@ -228,7 +232,9 @@ document.addEventListener("DOMContentLoaded", function() {
             vicuna();
         } else if (mptIsSelected) {
             mpt();
-        }
+        } else if (chatgptFreeIsSelected) {
+            chatgptFree();
+        }   
     });
 });
 let temperature = localStorage.getItem('temperature') ? parseFloat(localStorage.getItem('temperature')) : 0.7;
@@ -358,12 +364,34 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+async function chatgptFree() {
+    const userMsgValue = usermsg ? usermsg.value : '';
+    const model = "gpt-3.5-turbo";
 
+    const response = await fetch("https://text.pollinations.ai/v1/chat/completions", {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            model: model,
+            messages: [
+                { role: "user", content: userMsgValue }
+            ],
+            max_tokens: maxTokens,
+            temperature: temperature,
+            stream: false
+        })
+    });
+
+    const data = await response.json();
+    botmsg.textContent = data.choices[0].message.content;
+}
 async function openai() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const model = gptIsSelected ? "gpt-3.5-turbo" : "gpt-4";
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://text.pollinations.ai/", {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${openaikey}`,
