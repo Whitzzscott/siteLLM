@@ -104,7 +104,6 @@ let stablelmIsSelected = false;
 let pythiaIsSelected = false;
 let vicunaIsSelected = false;
 let mptIsSelected = false;
-let chatgptFreeIsSelected = false;
 
 document.addEventListener("DOMContentLoaded", function() {
     const saveSettings = document.getElementById("save-settings");
@@ -131,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
         pythiaIsSelected = false;
         vicunaIsSelected = false;
         mptIsSelected = false;
-        chatgptFreeIsSelected = false;
+
         switch(selectedValue) {
             case "gpt-3.5":
                 gptIsSelected = true;
@@ -187,9 +186,6 @@ document.addEventListener("DOMContentLoaded", function() {
             case "mpt":
                 mptIsSelected = true;
                 break;
-            case "chatgpt-free":
-                chatgptFreeIsSelected = true;
-                break;
         }
     }); 
 
@@ -199,9 +195,8 @@ document.addEventListener("DOMContentLoaded", function() {
             window.alert("ERR: Max length exceeds limit!");
             return;
         } 
-
         if (gptIsSelected || gpt4IsSelected) {
-            openai();
+            openai('gpt');
         } else if (claudeIsSelected) {
             claude();
         } else if (openRouterIsSelected) {
@@ -209,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (llama2IsSelected) {
             llama2();
         } else if (mistralIsSelected) {
-            mistral();
+            mistral(); 
         } else if (palmIsSelected) {
             palm();
         } else if (anthropicIsSelected) {
@@ -232,9 +227,9 @@ document.addEventListener("DOMContentLoaded", function() {
             vicuna();
         } else if (mptIsSelected) {
             mpt();
-        } else if (chatgptFreeIsSelected) {
-            chatgptFree();
-        }   
+        } else {
+            openai('gpt');
+        }
     });
 });
 let temperature = localStorage.getItem('temperature') ? parseFloat(localStorage.getItem('temperature')) : 0.7;
@@ -244,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const saveApiSettings = document.getElementById("save-api-settings");
     if (saveApiSettings) {
         saveApiSettings.addEventListener("click", function() {
-            const openaiKey = document.getElementById("openai-key")?.value?.trim() || "";
             const googleKey = document.getElementById("google-key")?.value?.trim() || "";
             const claudeKey = document.getElementById("claude-key")?.value?.trim() || "";
             const openRouterKey = document.getElementById("openrouter-key")?.value?.trim() || "";
@@ -262,10 +256,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const vicunaKey = document.getElementById("vicuna-key")?.value?.trim() || "";
             const mptKey = document.getElementById("mpt-key")?.value?.trim() || "";
             
-            if (openaiKey) {
-                localStorage.setItem('openai-key', openaiKey);
-                openaikey = openaiKey;
-            }
             if (googleKey) {
                 localStorage.setItem('google-key', googleKey);
                 geminiKey = googleKey;
@@ -364,85 +354,119 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-async function chatgptFree() {
+
+async function openai(gpt) {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const model = "gpt-3.5-turbo";
+    const model = gpt === "gpt" ? "gpt-3.5-turbo" : "gpt-4";
+    const typingIndicator = document.getElementById("typing-indicator");
 
-    const response = await fetch("https://text.pollinations.ai/v1/chat/completions", {
-        method: "POST", 
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            model: model,
-            messages: [
-                { role: "user", content: userMsgValue }
-            ],
-            max_tokens: maxTokens,
-            temperature: temperature,
-            stream: false
-        })
-    });
+    try {
+        typingIndicator.style.display = "block";
 
-    const data = await response.json();
-    botmsg.textContent = data.choices[0].message.content;
-}
-async function openai() {
-    const userMsgValue = usermsg ? usermsg.value : '';
-    const model = gptIsSelected ? "gpt-3.5-turbo" : "gpt-4";
+        const response = await fetch("https://text.pollinations.ai/", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                model: model,
+                messages: [
+                    { role: "user", content: userMsgValue }
+                ],
+                max_tokens: maxTokens,
+                temperature: temperature
+            })
+        });
 
-    const response = await fetch("https://text.pollinations.ai/", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${openaikey}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            model: model,
-            messages: [
-                { role: "user", content: userMsgValue }
-            ],
-            max_tokens: maxTokens,
-            temperature: temperature
-        })
-    });
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
 
-    const data = await response.json();
-    botmsg.textContent = data.choices[0].message.content;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("text/plain")) {
+            const text = await response.text();
+            botmsg.textContent = text;
+            typingIndicator.style.display = "none";
+            return;
+        }
+
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            if (text.trim().length > 0 && !text.includes('{') && !text.includes('[')) {
+                botmsg.textContent = text;
+                typingIndicator.style.display = "none";
+                return;
+            }
+            throw new Error('Invalid JSON response from API');
+        }
+
+        if (!data.choices?.[0]?.message?.content) {
+            throw new Error('Invalid response format from API');
+        }
+
+        botmsg.textContent = data.choices[0].message.content;
+        typingIndicator.style.display = "none";
+
+    } catch (error) {
+        console.error('Error:', error);
+        botmsg.textContent = 'Sorry, there was an error processing your request. Please try again.';
+        typingIndicator.style.display = "none";
+    }
 }
 
 async function claude() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const url = 'https://api.cohere.ai/v1/generate';
-
-    const headers = {
-        'Authorization': `Bearer ${Cohereapi}`,
-        'Content-Type': 'application/json'
-    };
-
-    const body = JSON.stringify({
-        model: 'command',
-        prompt: userMsgValue,
-        max_tokens: maxTokens,
-        temperature: temperature
-    });
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
+    const claudeKey = localStorage.getItem('claude-key');
 
     try {
-        const response = await fetch(url, {
+        if (!claudeKey) {
+            throw new Error('Claude API key not found. Please add your API key in settings.');
+        }
+
+        typingIndicator.style.display = "block";
+
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
             method: 'POST',
-            headers: headers,
-            body: body
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': claudeKey,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: "claude-3-opus-20240229",
+                messages: [
+                    { role: "user", content: userMsgValue }
+                ],
+                max_tokens: maxTokens,
+                temperature: temperature
+            })
         });
 
-        const data = await response.json();
-        if (response.ok) {
-            const botmsg = document.getElementById("Charmessage");
-            botmsg.textContent = data.text;
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (result?.content?.[0]?.text) {
+            botmsg.style.display = "block";
+            botmsg.textContent = result.content[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
-            console.error('Error:', data);
+            throw new Error("Invalid response structure");
         }
     } catch (error) {
-        console.error('Fetch Error:', error);
+        console.error("Claude API Error:", error);
+        botmsg.style.display = "block";
+        botmsg.textContent = `Error: ${error.message || "Failed to communicate with Claude API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
@@ -468,7 +492,7 @@ async function openRouter() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "openai/gpt-3.5-turbo",
+                model: "openai/gpt-4-turbo-preview",
                 messages: [
                     { role: "user", content: userMsgValue }
                 ],
@@ -506,11 +530,16 @@ async function llama2() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const llama2Key = localStorage.getItem('llama2-key');
     
     try {
+        if (!llama2Key) {
+            throw new Error('Llama2 API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.llama2.ai/v1/chat/completions", {
+        const response = await fetch("https://api.perplexity.ai/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -524,8 +553,7 @@ async function llama2() {
                 temperature: temperature,
                 max_tokens: maxTokens,
                 top_p: 0.95,
-                frequency_penalty: 0,
-                presence_penalty: 0
+                stream: false
             })
         });
 
@@ -555,8 +583,13 @@ async function mistral() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const mistralKey = localStorage.getItem('mistral-key');
     
     try {
+        if (!mistralKey) {
+            throw new Error('Mistral API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
         const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -566,7 +599,7 @@ async function mistral() {
                 'Authorization': `Bearer ${mistralKey}`
             },
             body: JSON.stringify({
-                model: "mistral-medium",
+                model: "mistral-large-latest",
                 messages: [
                     { role: "user", content: userMsgValue }
                 ],
@@ -600,21 +633,32 @@ async function palm() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const palmKey = localStorage.getItem('palm-key');
     
     try {
+        if (!palmKey) {
+            throw new Error('PaLM API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/text-bison-001:generateText?key=${palmKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${palmKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                prompt: {
-                    text: userMsgValue
-                },
-                temperature: temperature,
-                maxOutputTokens: maxTokens
+                contents: [{
+                    parts: [{
+                        text: userMsgValue
+                    }]
+                }],
+                generationConfig: {
+                    temperature: temperature,
+                    maxOutputTokens: maxTokens,
+                    topP: 0.8,
+                    topK: 40
+                }
             })
         });
 
@@ -623,17 +667,17 @@ async function palm() {
         }
 
         const result = await response.json();
-        if (result?.candidates?.[0]?.output) {
+        if (result?.candidates?.[0]?.content?.parts?.[0]?.text) {
             botmsg.style.display = "block";
-            botmsg.textContent = result.candidates[0].output;
+            botmsg.textContent = result.candidates[0].content.parts[0].text;
             botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
-        console.error("PaLM API Error:", error);
+        console.error("Gemini API Error:", error);
         botmsg.style.display = "block";
-        botmsg.textContent = `Error: ${error.message || "Failed to communicate with PaLM API"}`;
+        botmsg.textContent = `Error: ${error.message || "Failed to communicate with Gemini API"}`;
     } finally {
         typingIndicator.style.display = "none";
     }
@@ -643,19 +687,25 @@ async function anthropic() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const anthropicKey = localStorage.getItem('anthropic-key');
     
     try {
+        if (!anthropicKey) {
+            throw new Error('Anthropic API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
         const response = await fetch("https://api.anthropic.com/v1/messages", {
             method: 'POST',
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': anthropicKey,
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: "claude-3-opus",
+                model: "claude-3-opus-20240229",
                 messages: [
                     { role: "user", content: userMsgValue }
                 ],
@@ -689,18 +739,23 @@ async function falcon() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const falconKey = localStorage.getItem('falcon-key');
     
     try {
+        if (!falconKey) {
+            throw new Error('Falcon API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.aimlapi.com/v1", {
+        const response = await fetch("https://api.together.xyz/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${falconKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "falcon-40b",
+                model: "tiiuae/falcon-180B",
                 messages: [
                     { role: "user", content: userMsgValue }
                 ],
@@ -734,18 +789,23 @@ async function gptNeo() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const gptNeoKey = localStorage.getItem('gptneo-key');
 
     try {
+        if (!gptNeoKey) {
+            throw new Error('GPT-Neo API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.eleuther.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${gptNeoKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "gpt-neo-2.7B",
+                model: "EleutherAI/gpt-neox-20b",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -777,18 +837,23 @@ async function bloom() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const bloomKey = localStorage.getItem('bloom-key');
 
     try {
+        if (!bloomKey) {
+            throw new Error('BLOOM API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.bigscience.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${bloomKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "bloom",
+                model: "bigscience/bloom",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -820,18 +885,23 @@ async function opt() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const optKey = localStorage.getItem('opt-key');
 
     try {
+        if (!optKey) {
+            throw new Error('OPT API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.meta.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${optKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "opt-175b",
+                model: "facebook/opt-66b",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -863,18 +933,23 @@ async function dolly() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const dollyKey = localStorage.getItem('dolly-key');
 
     try {
+        if (!dollyKey) {
+            throw new Error('Dolly API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.databricks.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${dollyKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "dolly-v2",
+                model: "databricks/dolly-v2-12b",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -906,18 +981,23 @@ async function stablelm() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const stablelm = localStorage.getItem('stablelm-key');
 
     try {
+        if (!stablelm) {
+            throw new Error('StableLM API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.stability.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${stablelm}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "stablelm-3b",
+                model: "stabilityai/stablelm-3b-4e1t",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -949,18 +1029,23 @@ async function pythia() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const pythiaKey = localStorage.getItem('pythia-key');
 
     try {
+        if (!pythiaKey) {
+            throw new Error('Pythia API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.eleuther.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${pythiaKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "pythia-12b",
+                model: "EleutherAI/pythia-12b",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
@@ -992,18 +1077,23 @@ async function vicuna() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const vicunaKey = localStorage.getItem('vicuna-key');
 
     try {
+        if (!vicunaKey) {
+            throw new Error('Vicuna API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.lmsys.ai/v1/chat/completions", {
+        const response = await fetch("https://api.together.xyz/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${vicunaKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "vicuna-13b",
+                model: "lmsys/vicuna-13b-v1.5",
                 messages: [
                     { role: "user", content: userMsgValue }
                 ],
@@ -1037,18 +1127,23 @@ async function mpt() {
     const userMsgValue = usermsg ? usermsg.value : '';
     const botmsg = document.getElementById("botmsg");
     const typingIndicator = document.getElementById("typing-indicator");
+    const mptKey = localStorage.getItem('mpt-key');
 
     try {
+        if (!mptKey) {
+            throw new Error('MPT API key not found. Please add your API key in settings.');
+        }
+
         typingIndicator.style.display = "block";
         
-        const response = await fetch("https://api.mosaicml.ai/v1/completions", {
+        const response = await fetch("https://api.together.xyz/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${mptKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "mpt-7b",
+                model: "mosaicml/mpt-7b",
                 prompt: userMsgValue,
                 max_tokens: maxTokens,
                 temperature: temperature
