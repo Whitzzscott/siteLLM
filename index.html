@@ -255,6 +255,50 @@
             background-color: rgba(255,255,255,0.15);
             transform: translateY(-2px);
         }
+
+        @media screen and (max-width: 480px) {
+            .chat-message {
+                margin: 3px 0;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            button, input, select {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+
+            .loading-text {
+                font-size: 22px;
+            }
+
+            .loading-subtext {
+                font-size: 14px;
+            }
+
+            .loading-bar {
+                width: 280px;
+                height: 20px;
+            }
+
+            .loading-logo img {
+                width: 90px;
+                height: 90px;
+            }
+
+            .Header {
+                font-size: 24px;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .responsive-box {
+                width: 90%;
+                margin: 10px auto;
+                padding: 15px;
+                border-radius: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -442,6 +486,98 @@
                 }
             }"
         >
+        <div style="margin: 10px 0;">
+            <select id="model-select" style="
+                border-radius: 15px;
+                background: linear-gradient(145deg, #4a4a4a, #5a5a5a);
+                color: wheat;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                outline: none;
+                position: absolute;
+                background-color: black;
+                top: 425px;
+                left: 250px;
+            " onchange="handleModelChange(this.value)">
+                <option value="gpt-3.5">OpenAI GPT-3.5 ⚡</option>
+                <option value="gpt-4">OpenAI GPT-4 🔥</option>
+                <option value="claude">Claude 3 Opus 💫</option>
+                <option value="palm">Google Gemini Pro 🌟</option>
+                <option value="Openrouter">OpenRouter/Toppy</option>
+                <option value="llama2">Meta Llama 2</option>
+                <option value="mistral">Mistral AI</option>
+                <option value="anthropic">Anthropic Claude 2</option>
+                <option value="falcon">TII Falcon</option>
+                <option value="gpt-neo">EleutherAI GPT-Neo</option>
+                <option value="bloom">BigScience BLOOM</option>
+                <option value="opt">Meta OPT</option>
+                <option value="dolly">Databricks Dolly</option>
+                <option value="stablelm">StabilityAI StableLM</option>
+                <option value="pythia">EleutherAI Pythia</option>
+                <option value="vicuna">LMSYS Vicuna</option>
+                <option value="mpt">MosaicML MPT</option>
+            </select>
+        </div>
+        <script>
+            function handleModelChange(selectedModel) {
+                switch (selectedModel) {
+                    case 'gpt-3.5':
+                        openai('gpt-3.5');
+                        break;
+                    case 'gpt-4':
+                        openai('gpt-4');
+                        break;
+                    case 'claude':
+                        claude();
+                        break;
+                    case 'palm':
+                        palm();
+                        break;
+                    case 'Openrouter':
+                        openRouter();
+                        break;
+                    case 'llama2':
+                        llama2();
+                        break;
+                    case 'mistral':
+                        mistral();
+                        break;
+                    case 'anthropic':
+                        anthropic();
+                        break;
+                    case 'falcon':
+                        falcon();
+                        break;
+                    case 'gpt-neo':
+                        gptNeo();
+                        break;
+                    case 'bloom':
+                        bloom();
+                        break;
+                    case 'opt':
+                        opt();
+                        break;
+                    case 'dolly':
+                        dolly();
+                        break;
+                    case 'stablelm':
+                        stablelm();
+                        break;
+                    case 'pythia':
+                        pythia();
+                        break;
+                    case 'vicuna':
+                        vicuna();
+                        break;
+                    case 'mpt':
+                        mpt();
+                        break;
+                    default:
+                        openai('gpt');
+                }
+            }
+        </script>
         <style>
             @keyframes inputFadeIn {
                 0% {
@@ -538,6 +674,7 @@
                     }
                 }
             </style>
+            
             <button id="Setting" style="
                 border-radius: 8px;
                 position: absolute;
@@ -662,6 +799,126 @@
                 filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));
                 transition: transform 0.2s ease;
             "></i>
+        <button 
+            onclick="saveChat()"
+            class="icon"
+            style="
+                background-color: transparent;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                top: 35rem;
+                position: absolute;
+                left: 59rem;
+                transition: all 0.3s ease;
+                border-radius: 50%;
+                box-shadow: 0 2px 8px rgba(0,255,136,0.2);
+                backdrop-filter: blur(4px);
+            ">
+            <i class="fa-solid fa-save" style="
+                color: whitesmoke;
+                font-size: 1.2em;
+                filter: drop-shadow(0 0 2px rgba(0,255,136,0.5));
+                transition: transform 0.2s ease;
+            "></i>
+        </button>
+
+        <script>
+        function saveChat() {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            overlay.style.display = 'flex';
+            overlay.style.flexDirection = 'column';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.zIndex = '1000';
+            overlay.style.animation = 'fadeIn 0.5s';
+
+            const promptBox = document.createElement('div');
+            promptBox.style.backgroundColor = '#1a1a1a';
+            promptBox.style.color = 'white';
+            promptBox.style.padding = '30px';
+            promptBox.style.borderRadius = '12px';
+            promptBox.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.5)';
+            promptBox.style.textAlign = 'center';
+            promptBox.style.transition = 'transform 0.3s ease';
+            promptBox.style.transform = 'scale(0.9)';
+            promptBox.style.animation = 'scaleUp 0.3s forwards';
+
+            const message = document.createElement('p');
+            message.innerText = 'Do you want to save a chat or import a chat?';
+            message.style.marginBottom = '20px';
+            promptBox.appendChild(message);
+
+            const createButton = (text, bgColor, onClick) => {
+                const button = document.createElement('button');
+                button.innerText = text;
+                button.style.backgroundColor = bgColor;
+                button.style.color = 'white';
+                button.style.border = 'none';
+                button.style.padding = '12px 24px';
+                button.style.borderRadius = '8px';
+                button.style.cursor = 'pointer';
+                button.style.margin = '5px'; 
+                button.style.transition = 'background-color 0.3s, transform 0.2s';
+                button.onmouseover = () => button.style.backgroundColor = darkenColor(bgColor);
+                button.onmouseout = () => button.style.backgroundColor = bgColor;
+                button.onclick = onClick;
+                promptBox.appendChild(button);
+                return button;
+            };
+
+            createButton('Save Chat', '#4CAF50', () => {
+                const chatContent = document.getElementById('messages').innerHTML;
+                const blob = new Blob([chatContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'chat.html';
+                a.click();
+                URL.revokeObjectURL(url);
+                document.body.removeChild(overlay);
+            });
+
+            createButton('Import Chat', '#2196F3', () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.html';
+                input.onchange = (event) => {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const importedChat = e.target.result;
+                        document.getElementById('messages').innerHTML = importedChat;
+                        document.body.removeChild(overlay);
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            });
+
+            createButton('Cancel', '#f44336', () => {
+                document.body.removeChild(overlay);
+            });
+
+            overlay.appendChild(promptBox);
+            document.body.appendChild(overlay);
+        }
+
+        function darkenColor(color) {
+            const colorObj = new Color(color);
+            return colorObj.darken(10).toString();
+        }
+
+        </script>
         </button>
     </div>
     <div id="chat-container" style="position: absolute; top: 150px; left: 550px; width: 500px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; -ms-overflow-style: none;" onscroll="this.style.scrollbarWidth='none';">
@@ -674,6 +931,7 @@
                 <span></span>
                 <span></span>
                 <span></span>
+
             </div>
         </div>
     </div>
