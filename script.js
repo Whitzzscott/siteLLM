@@ -53,26 +53,36 @@ document.addEventListener("DOMContentLoaded", function() {
     const chatbar = document.getElementById("chatbar");
 
     let isExpanded = false;
+    const ANIMATION_DURATION = 400;
+    const EXPANDED_WIDTH = "200px";
+    const COLLAPSED_WIDTH = "200px";
+    const MIN_WIDTH = "200px";
 
     charButton.addEventListener("click", function() {
-        if (isExpanded) {
-            chatbar.style.width = "0px";
-            charButton.style.left = "0px"; 
-            charButton.textContent = ">";
-            chatbar.classList.remove('expanded');
-            chatbar.classList.add('collapsed');
-            charButton.classList.remove('expanded');
-            charButton.classList.add('collapsed');
-        } else {
-            chatbar.style.width = "130px";
-            charButton.style.left = "130px";
-            charButton.textContent = "<";
-            chatbar.classList.remove('collapsed');
-            chatbar.classList.add('expanded');
-            charButton.classList.remove('collapsed');
-            charButton.classList.add('expanded');
-        }
-        isExpanded = !isExpanded;
+        if (charButton.dataset.animating === "true") return;
+        
+        charButton.dataset.animating = "true";
+        
+        const newState = !isExpanded;
+        
+        chatbar.style.width = newState ? EXPANDED_WIDTH : COLLAPSED_WIDTH;
+        chatbar.style.minWidth = MIN_WIDTH;
+        charButton.style.left = newState ? EXPANDED_WIDTH : COLLAPSED_WIDTH;
+        charButton.textContent = newState ? "<" : ">";
+
+        const newClass = newState ? "expanded" : "collapsed";
+        const oldClass = newState ? "collapsed" : "expanded";
+
+        chatbar.classList.remove(oldClass);
+        chatbar.classList.add(newClass);
+        charButton.classList.remove(oldClass);
+        charButton.classList.add(newClass);
+
+        setTimeout(() => {
+            charButton.dataset.animating = "false";
+        }, ANIMATION_DURATION);
+
+        isExpanded = newState;
     });
 });
 
@@ -94,8 +104,6 @@ let stablelmIsSelected = false;
 let pythiaIsSelected = false;
 let vicunaIsSelected = false;
 let mptIsSelected = false;
-
-const openaikey = "";
 
 document.addEventListener("DOMContentLoaded", function() {
     const saveSettings = document.getElementById("save-settings");
@@ -182,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }); 
 
     saveSettings.addEventListener("click", function() {
-        const settingMaxLength = parseInt(settingMaxLengthInput.value, 10);
+        const settingMaxLength = parseInt(document.getElementById("settingMaxLengthInput")?.value || "4096", 10);
         if (settingMaxLength > 4096) {
             window.alert("ERR: Max length exceeds limit!");
             return;
@@ -223,37 +231,101 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-const claudeKey = "";
-const openRouterKey = "";
-const mistralKey = "";
-const palmKey = "";
-const anthropicKey = "";
-const falconKey = "";
-const gptNeoKey = "";
-const bloomKey = "";
-const optKey = "";
-const dollyKey = "";
-const stablelmKey = "";
-const pythiaKey = "";
-const vicunaKey = "";
-const mptKey = "";
-
-let temperature = 0.7;
-let maxTokens = 1000;
+let temperature = localStorage.getItem('temperature') ? parseFloat(localStorage.getItem('temperature')) : 0.7;
+let maxTokens = localStorage.getItem('maxTokens') ? parseInt(localStorage.getItem('maxTokens')) : 1000;
 
 document.addEventListener("DOMContentLoaded", function() {
     const saveApiSettings = document.getElementById("save-api-settings");
     if (saveApiSettings) {
         saveApiSettings.addEventListener("click", function() {
-            const googleKey = document.getElementById("google-key").value;
-            const yiApiKey = document.getElementById("yi-key").value;
+            const openaiKey = document.getElementById("openai-key")?.value?.trim() || "";
+            const googleKey = document.getElementById("google-key")?.value?.trim() || "";
+            const claudeKey = document.getElementById("claude-key")?.value?.trim() || "";
+            const openRouterKey = document.getElementById("openrouter-key")?.value?.trim() || "";
+            const llama2Key = document.getElementById("llama2-key")?.value?.trim() || "";
+            const mistralKey = document.getElementById("mistral-key")?.value?.trim() || "";
+            const palmKey = document.getElementById("palm-key")?.value?.trim() || "";
+            const anthropicKey = document.getElementById("anthropic-key")?.value?.trim() || "";
+            const falconKey = document.getElementById("falcon-key")?.value?.trim() || "";
+            const gptNeoKey = document.getElementById("gptneo-key")?.value?.trim() || "";
+            const bloomKey = document.getElementById("bloom-key")?.value?.trim() || "";
+            const optKey = document.getElementById("opt-key")?.value?.trim() || "";
+            const dollyKey = document.getElementById("dolly-key")?.value?.trim() || "";
+            const stablelmKey = document.getElementById("stablelm-key")?.value?.trim() || "";
+            const pythiaKey = document.getElementById("pythia-key")?.value?.trim() || "";
+            const vicunaKey = document.getElementById("vicuna-key")?.value?.trim() || "";
+            const mptKey = document.getElementById("mpt-key")?.value?.trim() || "";
             
-            if (googleKey) geminiKey = googleKey;
-            if (yiApiKey) yiKey = yiApiKey;
-            
+            if (openaiKey) {
+                localStorage.setItem('openai-key', openaiKey);
+                openaikey = openaiKey;
+            }
+            if (googleKey) {
+                localStorage.setItem('google-key', googleKey);
+                geminiKey = googleKey;
+            }
+            if (claudeKey) {
+                localStorage.setItem('claude-key', claudeKey);
+                claudeApiKey = claudeKey;
+            }
+            if (openRouterKey) {
+                localStorage.setItem('openrouter-key', openRouterKey);
+                openRouterApiKey = openRouterKey;
+            }
+            if (llama2Key) {
+                localStorage.setItem('llama2-key', llama2Key);
+                llama2ApiKey = llama2Key;
+            }
+            if (mistralKey) {
+                localStorage.setItem('mistral-key', mistralKey);
+                mistralApiKey = mistralKey;
+            }
+            if (palmKey) {
+                localStorage.setItem('palm-key', palmKey);
+                palmApiKey = palmKey;
+            }
+            if (anthropicKey) {
+                localStorage.setItem('anthropic-key', anthropicKey);
+                anthropicApiKey = anthropicKey;
+            }
+            if (falconKey) {
+                localStorage.setItem('falcon-key', falconKey);
+                falconApiKey = falconKey;
+            }
+            if (gptNeoKey) {
+                localStorage.setItem('gptneo-key', gptNeoKey);
+                gptNeoApiKey = gptNeoKey;
+            }
+            if (bloomKey) {
+                localStorage.setItem('bloom-key', bloomKey);
+                bloomApiKey = bloomKey;
+            }
+            if (optKey) {
+                localStorage.setItem('opt-key', optKey);
+                optApiKey = optKey;
+            }
+            if (dollyKey) {
+                localStorage.setItem('dolly-key', dollyKey);
+                dollyApiKey = dollyKey;
+            }
+            if (stablelmKey) {
+                localStorage.setItem('stablelm-key', stablelmKey);
+                stablelmApiKey = stablelmKey;
+            }
+            if (pythiaKey) {
+                localStorage.setItem('pythia-key', pythiaKey);
+                pythiaApiKey = pythiaKey;
+            }
+            if (vicunaKey) {
+                localStorage.setItem('vicuna-key', vicunaKey);
+                vicunaApiKey = vicunaKey;
+            }
+            if (mptKey) {
+                localStorage.setItem('mpt-key', mptKey);
+                mptApiKey = mptKey;
+            }
             const modelPreset = document.getElementById("model-preset").value;
             const responseStyle = document.getElementById("response-style").value;
-            
             switch(modelPreset) {
                 case "creative":
                     temperature = 0.9;
@@ -280,6 +352,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     maxTokens = 800;
                     break;
             }
+
+            localStorage.setItem('temperature', temperature);
+            localStorage.setItem('maxTokens', maxTokens);
         });
     }
 });
@@ -345,13 +420,23 @@ async function claude() {
 
 async function openRouter() {
     const userMsgValue = usermsg ? usermsg.value : '';
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
+    const openRouterKey = localStorage.getItem('openrouter-key');
         
     try {
+        if (!openRouterKey) {
+            throw new Error('OpenRouter API key not found. Please add your API key in settings.');
+        }
+
+        typingIndicator.style.display = "block";
+        
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${openRouterKey}`,
-                "HTTP-Referer": window.location.origin,
+                "HTTP-Referer": window.location.href,
+                "X-Title": "AI Chat Interface",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -360,7 +445,9 @@ async function openRouter() {
                     { role: "user", content: userMsgValue }
                 ],
                 max_tokens: maxTokens,
-                temperature: temperature
+                temperature: temperature,
+                top_p: 0.9,
+                stream: false
             })
         });
 
@@ -369,25 +456,33 @@ async function openRouter() {
         }
 
         const result = await response.json();
-        const botmsg = document.getElementById("botmsg");
+        
         if (result?.choices?.[0]?.message?.content) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].message.content;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             console.error("Invalid response structure:", result);
             botmsg.textContent = "Error: Failed to get valid response from OpenRouter API";
         }
     } catch (error) {
         console.error("OpenRouter API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with OpenRouter API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function llama2() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.llama2.ai/v1/chat/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
     
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.llama2.ai/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -411,26 +506,32 @@ async function llama2() {
         }
 
         const result = await response.json();
-        const botmsg = document.getElementById("Charmessage");
 
         if (result?.choices?.[0]?.message?.content) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].message.content;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Llama 2 API Error:", error);
-        const botmsg = document.getElementById("Charmessage");
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Llama 2 API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function mistral() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.mistral.ai/v1/chat/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
     
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -452,22 +553,30 @@ async function mistral() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.message?.content) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].message.content;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Mistral API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Mistral API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function palm() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/text-bison-001:generateText";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
     
     try {
-        const response = await fetch(`${API_URL}?key=${palmKey}`, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/text-bison-001:generateText?key=${palmKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -487,24 +596,31 @@ async function palm() {
 
         const result = await response.json();
         if (result?.candidates?.[0]?.output) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.candidates[0].output;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("PaLM API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with PaLM API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function anthropic() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.anthropic.com/v1/messages";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
     
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': anthropicKey,
@@ -526,22 +642,30 @@ async function anthropic() {
 
         const result = await response.json();
         if (result?.content?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.content[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Anthropic API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Anthropic API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function falcon() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.aimlapi.com/v1";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
     
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.aimlapi.com/v1", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${falconKey}`,
@@ -563,22 +687,30 @@ async function falcon() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.message?.content) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].message.content;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Falcon API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Falcon API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function gptNeo() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.eleuther.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.eleuther.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${gptNeoKey}`,
@@ -598,22 +730,30 @@ async function gptNeo() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("GPT-Neo API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with GPT-Neo API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function bloom() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.bigscience.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.bigscience.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${bloomKey}`,
@@ -633,22 +773,30 @@ async function bloom() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("BLOOM API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with BLOOM API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function opt() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.meta.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.meta.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${optKey}`,
@@ -668,22 +816,30 @@ async function opt() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("OPT API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with OPT API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function dolly() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.databricks.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.databricks.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${dollyKey}`,
@@ -703,22 +859,30 @@ async function dolly() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Dolly API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Dolly API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function stablelm() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.stability.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.stability.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${stablelm}`,
@@ -738,22 +902,30 @@ async function stablelm() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("StableLM API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with StableLM API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function pythia() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.eleuther.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.eleuther.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${pythiaKey}`,
@@ -773,22 +945,30 @@ async function pythia() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Pythia API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Pythia API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function vicuna() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.lmsys.ai/v1/chat/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.lmsys.ai/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${vicunaKey}`,
@@ -810,22 +990,30 @@ async function vicuna() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.message?.content) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].message.content;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("Vicuna API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with Vicuna API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
 
 async function mpt() {
     const userMsgValue = usermsg ? usermsg.value : '';
-    const API_URL = "https://api.mosaicml.ai/v1/completions";
+    const botmsg = document.getElementById("botmsg");
+    const typingIndicator = document.getElementById("typing-indicator");
 
     try {
-        const response = await fetch(API_URL, {
+        typingIndicator.style.display = "block";
+        
+        const response = await fetch("https://api.mosaicml.ai/v1/completions", {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${mptKey}`,
@@ -845,12 +1033,17 @@ async function mpt() {
 
         const result = await response.json();
         if (result?.choices?.[0]?.text) {
+            botmsg.style.display = "block";
             botmsg.textContent = result.choices[0].text;
+            botmsg.style.animation = "messageSlideIn 0.3s ease-out forwards";
         } else {
             throw new Error("Invalid response structure");
         }
     } catch (error) {
         console.error("MPT API Error:", error);
+        botmsg.style.display = "block";
         botmsg.textContent = `Error: ${error.message || "Failed to communicate with MPT API"}`;
+    } finally {
+        typingIndicator.style.display = "none";
     }
 }
