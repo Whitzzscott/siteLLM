@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Document</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="./script.js"></script>
     <style>
         :root {
             background-color: #343434;
@@ -383,25 +384,62 @@
             required 
             minlength="1"
             onkeydown="if(event.key === 'Enter') {
-                if (gptIsSelected) gpt();
-                else if (gpt4IsSelected) gpt4();
-                else if (claudeIsSelected) claude();
-                else if (openRouterIsSelected) openRouter();
-                else if (llama2IsSelected) llama2();
-                else if (mistralIsSelected) mistral();
-                else if (palmIsSelected) palm();
-                else if (anthropicIsSelected) anthropic();
-                else if (falconIsSelected) falcon();
-                else if (gptNeoIsSelected) gptNeo();
-                else if (bloomIsSelected) bloom();
-                else if (optIsSelected) opt();
-                else if (dollyIsSelected) dolly();
-                else if (stablelmIsSelected) stablelm();
-                else if (pythiaIsSelected) pythia();
-                else if (vicunaIsSelected) vicuna();
-                else if (mptIsSelected) mpt();
-                else if (chatgptFreeIsSelected) chatgptFree();
-                else gpt();
+                const selectedModel = document.getElementById('ai-model').value;
+                switch(selectedModel) {
+                    case 'gpt-3.5':
+                        openai('gpt');
+                        break;
+                    case 'gpt-4':
+                        openai('gpt');
+                        break;
+                    case 'claude':
+                        claude();
+                        break;
+                    case 'Openrouter':
+                        openRouter();
+                        break;
+                    case 'llama2':
+                        llama2();
+                        break;
+                    case 'mistral':
+                        mistral();
+                        break;
+                    case 'palm':
+                        palm();
+                        break;
+                    case 'anthropic':
+                        anthropic();
+                        break;
+                    case 'falcon':
+                        falcon();
+                        break;
+                    case 'gpt-neo':
+                        gptNeo();
+                        break;
+                    case 'bloom':
+                        bloom();
+                        break;
+                    case 'opt':
+                        opt();
+                        break;
+                    case 'dolly':
+                        dolly();
+                        break;
+                    case 'stablelm':
+                        stablelm();
+                        break;
+                    case 'pythia':
+                        pythia();
+                        break;
+                    case 'vicuna':
+                        vicuna();
+                        break;
+                    case 'mpt':
+                        mpt();
+                        break;
+                    default:
+                        openai('gpt');
+                }
             }"
         >
         <style>
@@ -543,25 +581,63 @@
     </div>
     <div>
         <button onclick="
-            if (gptIsSelected) gpt();
-            else if (gpt4IsSelected) gpt4();
-            else if (claudeIsSelected) claude();
-            else if (openRouterIsSelected) openRouter();
-            else if (llama2IsSelected) llama2();
-            else if (mistralIsSelected) mistral();
-            else if (palmIsSelected) palm();
-            else if (anthropicIsSelected) anthropic();
-            else if (falconIsSelected) falcon();
-            else if (gptNeoIsSelected) gptNeo();
-            else if (bloomIsSelected) bloom();
-            else if (optIsSelected) opt();
-            else if (dollyIsSelected) dolly();
-            else if (stablelmIsSelected) stablelm();
-            else if (pythiaIsSelected) pythia();
-            else if (vicunaIsSelected) vicuna();
-            else if (mptIsSelected) mpt();
-            else if (chatgptFreeIsSelected) chatgptFree();
-            else gpt();" 
+            const selectedModel = document.getElementById('ai-model').value;
+            switch(selectedModel) {
+                case 'gpt-3.5':
+                    openai('gpt');
+                    break;
+                case 'gpt-4': 
+                    openai('gpt');
+                    break;
+                case 'claude':
+                    claude();
+                    break;
+                case 'Openrouter':
+                    openRouter();
+                    break;
+                case 'llama2':
+                    llama2();
+                    break;
+                case 'mistral':
+                    mistral();
+                    break;
+                case 'palm':
+                    palm();
+                    break;
+                case 'anthropic':
+                    anthropic();
+                    break;
+                case 'falcon':
+                    falcon();
+                    break;
+                case 'gpt-neo':
+                    gptNeo();
+                    break;
+                case 'bloom':
+                    bloom();
+                    break;
+                case 'opt':
+                    opt();
+                    break;
+                case 'dolly':
+                    dolly();
+                    break;
+                case 'stablelm':
+                    stablelm();
+                    break;
+                case 'pythia':
+                    pythia();
+                    break;
+                case 'vicuna':
+                    vicuna();
+                    break;
+                case 'mpt':
+                    mpt();
+                    break;
+                default:
+                    openai('gpt');
+            }"
+
             class="icon" 
             id="sendbuttoncss" 
             style="
@@ -684,26 +760,6 @@
                 if (!openRouterKey && openRouterIsSelected) {
                     throw new Error('OpenRouter API key is not configured');
                 }
-                
-                if (gptIsSelected) await gpt();
-                else if (gpt4IsSelected) await gpt4();
-                else if (claudeIsSelected) await claude();
-                else if (openRouterIsSelected) await openRouter();
-                else if (llama2IsSelected) await llama2();
-                else if (mistralIsSelected) await mistral();
-                else if (palmIsSelected) await palm();
-                else if (anthropicIsSelected) await anthropic();
-                else if (falconIsSelected) await falcon();
-                else if (gptNeoIsSelected) await gptNeo();
-                else if (bloomIsSelected) await bloom();
-                else if (optIsSelected) await opt();
-                else if (dollyIsSelected) await dolly();
-                else if (stablelmIsSelected) await stablelm();
-                else if (pythiaIsSelected) await pythia();
-                else if (vicunaIsSelected) await vicuna();
-                else if (mptIsSelected) await mpt();
-                else if (chatgptFreeIsSelected) await chatgptFree();
-                else await gpt();
 
                 typingIndicator.style.display = 'none';
 
@@ -719,44 +775,161 @@
             }
         }
 
-        sendButton.addEventListener('click', handleSendMessage);
-        
         userInput.addEventListener('keypress', async (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                await handleSendMessage(e);
+                const userMessage = userInput.value.trim();
+                if (!userMessage) return;
+
+                const userBubble = createMessageBubble('You: ' + userMessage, true);
+                messagesContainer.appendChild(userBubble);
+                userInput.value = '';
+
+                typingIndicator.style.display = 'block';
+                typingIndicator.scrollIntoView({ behavior: 'smooth' });
+
+                try {
+                    const selectedModel = document.getElementById('ai-model').value;
+
+                    switch(selectedModel) {
+                        case 'gpt-3.5':
+                            await openai('gpt');
+                            break;
+                        case 'gpt-4':
+                            await openai('gpt');
+                            break;
+                        case 'claude':
+                            await claude();
+                            break;
+                        case 'Openrouter':
+                            await openRouter();
+                            break;
+                        case 'llama2':
+                            await llama2();
+                            break;
+                        case 'mistral':
+                            await mistral();
+                            break;
+                        case 'palm':
+                            await palm();
+                            break;
+                        case 'anthropic':
+                            await anthropic();
+                            break;
+                        case 'falcon':
+                            await falcon();
+                            break;
+                        case 'gpt-neo':
+                            await gptNeo();
+                            break;
+                        case 'bloom':
+                            await bloom();
+                            break;
+                        case 'opt':
+                            await opt();
+                            break;
+                        case 'dolly':
+                            await dolly();
+                            break;
+                        case 'stablelm':
+                            await stablelm();
+                            break;
+                        case 'pythia':
+                            await pythia();
+                            break;
+                        case 'vicuna':
+                            await vicuna();
+                            break;
+                        case 'mpt':
+                            await mpt();
+                            break;
+                        default:
+                            await openai('gpt');
+                    }
+
+                    const botResponse = botmsgElement.textContent;
+                    if (botResponse && botResponse.trim()) {
+                        const botBubble = createMessageBubble('Bot: ' + botResponse, false);
+                        messagesContainer.appendChild(botBubble);
+                        botBubble.scrollIntoView({ behavior: 'smooth' });
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    typingIndicator.style.display = 'none';
+                }
             }
         });
+    function checkFetchError(response) {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("Response was not JSON");
+        }
+        return response;
+    }
     </script>
-    <script src="./script.js"></script>
     <div id="ai-settings-panel" style="display: none;">
-        <div style="position: absolute; background-color: black; width: 500px; height: 500px; border-radius: 8px; top: 7rem; left: 500px; border-radius: 8px; ">
+        <div style="position: absolute; background-color: black; width: 500px; height: 510px; border-radius: 8px; top: 7rem; left: 500px; border-radius: 8px; ">
             <div class="ai-settings-panel">
                 <h2 style="color: white; margin: 20px; text-align: center;">AI Settings</h2>
                 
                 <div class="settings-group" style="padding: 20px;">
                     <div class="setting-item" style="margin-bottom: 20px;">
-                        <label style="color: white; display: block; margin-bottom: 8px;">AI Model</label>
-                        <select id="ai-model" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
-                            <option value="gpt-3.5">Openai/GPT-3.5</option>
-                            <option value="gpt-4">Openai/GPT-4</option>
-                            <option value="claude">Claude</option>
-                            <option value="Openrouter">Openrouter/toppy</option>
-                            <option value="llama2">Meta/Llama2</option>
-                            <option value="mistral">Mistral AI</option>
-                            <option value="palm">Google/PaLM</option>
-                            <option value="anthropic">Anthropic/Claude 2</option>
-                            <option value="falcon">TII/Falcon</option> //never add cohere
-                            <option value="gpt-neo">EleutherAI/GPT-Neo</option>
-                            <option value="bloom">BigScience/BLOOM</option>
-                            <option value="opt">Meta/OPT</option>
-                            <option value="dolly">Databricks/Dolly</option>
-                            <option value="stablelm">Stability AI/StableLM</option>
-                            <option value="pythia">EleutherAI/Pythia</option>
-                            <option value="vicuna">LMSYS/Vicuna</option>
-                            <option value="mpt">MosaicML/MPT</option>
-                            <option value="chatgpt-free">ChatGPT Free</option>
+                        <label style="color: white; display: block; margin-bottom: 12px; font-size: 16px; font-weight: 500;">AI Model</label>
+                        <select id="ai-model" style="
+                            width: 100%;
+                            padding: 12px;
+                            border-radius: 8px;
+                            background: linear-gradient(145deg, #2a2a2a, #383838);
+                            color: #ffffff;
+                            border: 1px solid rgba(255,255,255,0.1);
+                            font-size: 14px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                            transition: all 0.3s ease;
+                            cursor: pointer;
+                            outline: none;
+                        ">
+                            <optgroup label="Popular Models" style="background: #333;">
+                                <option value="gpt-3.5">OpenAI GPT-3.5 ⚡</option>
+                                <option value="gpt-4">OpenAI GPT-4 🔥</option>
+                                <option value="claude">Claude 3 Opus 💫</option>
+                                <option value="palm">Google Gemini Pro 🌟</option>
+                            </optgroup>
+                            <optgroup label="Other Models" style="background: #333;">
+                                <option value="Openrouter">OpenRouter/Toppy</option>
+                                <option value="llama2">Meta Llama 2</option>
+                                <option value="mistral">Mistral AI</option>
+                                <option value="anthropic">Anthropic Claude 2</option>
+                                <option value="falcon">TII Falcon</option>
+                                <option value="gpt-neo">EleutherAI GPT-Neo</option>
+                                <option value="bloom">BigScience BLOOM</option>
+                                <option value="opt">Meta OPT</option>
+                                <option value="dolly">Databricks Dolly</option>
+                                <option value="stablelm">StabilityAI StableLM</option>
+                                <option value="pythia">EleutherAI Pythia</option>
+                                <option value="vicuna">LMSYS Vicuna</option>
+                                <option value="mpt">MosaicML MPT</option>
+                            </optgroup>
                         </select>
+                        <style>
+                            #ai-model:hover {
+                                transform: translateY(-1px);
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                                border-color: rgba(255,255,255,0.2);
+                            }
+                            #ai-model:focus {
+                                transform: translateY(-1px);
+                                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                                border-color: rgba(255,255,255,0.3);
+                            }
+                            #ai-model option:hover {
+                                background-color: #444;
+                            }
+                        </style>
                     </div>
 
                     <div class="setting-item" style="margin-bottom: 20px;">
@@ -777,160 +950,277 @@
                         </label>
                     </div>
                 </div>
-                <button id="api-settings-button" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 20px;">
+                <button id="api-settings-button" style="
+                    background: linear-gradient(135deg, #0066ff, #0052cc);
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    width: 400px;
+                    position: relative;
+                    left: 40px;
+                    margin: 20px;
+                    font-weight: 500;
+                    font-size: 15px;
+                    transition: all 0.2s ease;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    position: relative;
+                    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                    "
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.2)';">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"></path>
+                    </svg>
                     API Settings
                 </button>
 
-                <div id="api-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000;">
-                    <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.5rem; font-weight: 500;">API Settings</h2>
+                <div id="api-settings-panel" style="display: none; position: absolute; background-color: #1e1e1e; width: 650px; height: 550px; border-radius: 16px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(8px);">
+                    <h2 style="color: white; margin: 25px; text-align: center; font-size: 1.8rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">🔑 API Settings</h2>
                     
-                    <div class="settings-group" style="padding: 20px;">
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <label style="color: white; display: block; margin-bottom: 8px;">OpenAI API Key</label>
-                            <input type="password" id="openai-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;" 
-                                value="" 
-                                onchange="localStorage.setItem('openai-key', this.value); window.openaikey = localStorage.getItem('openai-key');">
-                        </div>
-
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <label style="color: white; display: block; margin-bottom: 8px;">Claude API Key</label>
-                            <input type="password" id="claude-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;"
+                    <div class="settings-group" style="padding: 25px;">
+                        <div class="setting-item" style="margin-bottom: 25px;">
+                            <label style="color: white; display: block; margin-bottom: 10px; font-weight: 500;">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Claude API Key
+                                </span>
+                            </label>
+                            <input type="password" id="claude-key" 
+                                style="width: 100%; padding: 12px; border-radius: 8px; background: #2d2d2d; color: white; border: 1px solid #444; transition: all 0.2s ease; font-size: 14px;"
+                                placeholder="Enter your Claude API key..."
                                 value=""
                                 onchange="localStorage.setItem('claude-key', this.value); window.claudeApiKey = localStorage.getItem('claude-key');">
                         </div>
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <label style="color: white; display: block; margin-bottom: 8px;">OpenRouter API Key</label>
-                            <input type="password" id="openrouter-key" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;"
+
+                        <div class="setting-item" style="margin-bottom: 25px;">
+                            <label style="color: white; display: block; margin-bottom: 10px; font-weight: 500;">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                                    </svg>
+                                    OpenRouter API Key
+                                </span>
+                            </label>
+                            <input type="password" id="openrouter-key" 
+                                style="width: 100%; padding: 12px; border-radius: 8px; background: #2d2d2d; color: white; border: 1px solid #444; transition: all 0.2s ease; font-size: 14px;"
+                                placeholder="Enter your OpenRouter API key..."
                                 value=""
                                 onchange="localStorage.setItem('openrouter-key', this.value); window.openRouterApiKey = localStorage.getItem('openrouter-key');">
                         </div>
                         
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <label style="color: white; display: block; margin-bottom: 8px;">Model Customization</label>
-                            <select id="model-preset" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
-                                <option value="creative">Creative</option>
-                                <option value="balanced" selected>Balanced</option>
-                                <option value="precise">Precise</option>
+                        <div class="setting-item" style="margin-bottom: 25px;">
+                            <label style="color: white; display: block; margin-bottom: 10px; font-weight: 500;">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                    </svg>
+                                    Model Customization
+                                </span>
+                            </label>
+                            <select id="model-preset" style="width: 100%; padding: 12px; border-radius: 8px; background: #2d2d2d; color: white; border: 1px solid #444; transition: all 0.2s ease; cursor: pointer; font-size: 14px;">
+                                <option value="creative">🎨 Creative</option>
+                                <option value="balanced" selected>⚖️ Balanced</option>
+                                <option value="precise">🎯 Precise</option>
                             </select>
                         </div>
 
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <label style="color: white; display: block; margin-bottom: 8px;">Response Style</label>
-                            <select id="response-style" style="width: 100%; padding: 8px; border-radius: 4px; background: #333; color: white; border: 1px solid #666;">
-                                <option value="concise">Concise</option>
-                                <option value="detailed" selected>Detailed</option>
-                                <option value="technical">Technical</option>
-                                <option value="casual">Casual</option>
+                        <div class="setting-item" style="margin-bottom: 25px;">
+                            <label style="color: white; display: block; margin-bottom: 10px; font-weight: 500;">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    Response Style
+                                </span>
+                            </label>
+                            <select id="response-style" style="width: 100%; padding: 12px; border-radius: 8px; background: #2d2d2d; color: white; border: 1px solid #444; transition: all 0.2s ease; cursor: pointer; font-size: 14px;">
+                                <option value="concise">📝 Concise</option>
+                                <option value="detailed" selected>📚 Detailed</option>
+                                <option value="technical">⚙️ Technical</option>
+                                <option value="casual">💬 Casual</option>
                             </select>
                         </div>
 
-                        <div style="text-align: center;">
-                            <button id="save-api-settings" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
-                                Save API Settings
+                        <div style="display: flex; gap: 15px; margin-top: 30px;">
+                            <button id="save-api-settings" style="flex: 1; background: linear-gradient(45deg, #007bff, #0056b3); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                                Save Changes
                             </button>
-                        </div>
-                        <div class="setting-item" style="margin-bottom: 20px;">
-                            <button id="close-api-settings" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;" onclick="document.getElementById('api-settings-panel').style.display='none'">
+                            <button id="close-api-settings" style="flex: 1; background: linear-gradient(45deg, #dc3545, #b02a37); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.2); box-shadow: 0 2px 4px rgba(0,0,0,0.2);" 
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.3)'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'"
+                                onclick="document.getElementById('api-settings-panel').style.display='none'">
                                 Close
                             </button>
                         </div>
-                        
+                    </div>
+                </div>
                         <div class="setting-item" style="margin-bottom: 20px;">
-                            <button id="advanced-settings-button" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">
+                            <button id="advanced-settings-button" style="
+                                background: linear-gradient(135deg, #007bff, #0056b3);
+                                color: white;
+                                border: none;
+                                padding: 8px 16px;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                width: 500px;
+                                font-weight: 500;
+                                font-size: 12px;
+                                transition: all 0.2s ease;
+                                box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 4px;"
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.3)'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'"
+                                onclick="document.getElementById('advanced-settings-panel').style.display='block'; setTimeout(() => {document.getElementById('advanced-settings-panel').style.opacity = '1';}, 10);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                                 Advanced Settings
                             </button>
                         </div>
 
-                        <div id="advanced-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001;">
-                            <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.5rem; font-weight: 500;">Advanced Settings</h2>
+                        <div id="advanced-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1001; opacity: 0; transition: all 0.3s ease-in-out;">
+                            <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.8rem; font-weight: 600;">⚙️ Advanced Settings</h2>
                             <div class="settings-group" style="padding: 20px;">
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Llama2 API Key</label>
-                                    <input type="password" id="llama2-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('llama2-key', this.value); llama2ApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Mistral API Key</label>
-                                    <input type="password" id="mistral-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('mistral-key', this.value); mistralApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Google PaLM API Key</label>
-                                    <input type="password" id="palm-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('palm-key', this.value); palmApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Anthropic API Key</label>
-                                    <input type="password" id="anthropic-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('anthropic-key', this.value); anthropicApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Falcon API Key</label>
-                                    <input type="password" id="falcon-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('falcon-key', this.value); falconApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">GPT-Neo API Key</label>
-                                    <input type="password" id="gptneo-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('gptneo-key', this.value); gptNeoApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">BLOOM API Key</label>
-                                    <input type="password" id="bloom-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('bloom-key', this.value); bloomApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 20px;">
+                                    <label style="color: white; display: block; margin-bottom: 8px; font-weight: 500;">🤖 Select API to Configure</label>
+                                    <select id="api-selector" style="width: 100%; padding: 12px; border-radius: 8px; background: #333; color: white; border: 1px solid #666; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                                        <option value="">Choose an API... ✨</option>
+                                        <option value="llama2">🦙 Llama2</option>
+                                        <option value="mistral">🌪️ Mistral</option>
+                                        <option value="palm">🌴 Google PaLM</option>
+                                        <option value="anthropic">🧠 Anthropic</option>
+                                        <option value="falcon">🦅 Falcon</option>
+                                        <option value="gptneo">🤖 GPT-Neo</option>
+                                        <option value="bloom">🌺 BLOOM</option>
+                                        <option value="opt">⚡ OPT</option>
+                                        <option value="dolly">🐑 Dolly</option>
+                                        <option value="stablelm">🎯 StableLM</option>
+                                        <option value="pythia">🐍 Pythia</option>
+                                        <option value="vicuna">🦙 Vicuna</option>
+                                        <option value="mpt">💫 MPT</option>
+                                    </select>
                                 </div>
 
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">OPT API Key</label>
-                                    <input type="password" id="opt-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('opt-key', this.value); optApiKey = this.value;">
+                                <div id="api-key-input" style="display: none; margin-bottom: 20px; animation: slideDown 0.3s ease-out;">
+                                    <label id="api-key-label" style="color: white; display: block; margin-bottom: 8px; font-weight: 500;"></label>
+                                    <input type="password" id="selected-api-key" style="width: 100%; padding: 12px; border-radius: 8px; background: #333; color: white; border: 1px solid #666; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                                 </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Dolly API Key</label>
-                                    <input type="password" id="dolly-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('dolly-key', this.value); dollyApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">StableLM API Key</label>
-                                    <input type="password" id="stablelm-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('stablelm-key', this.value); stablelmApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Pythia API Key</label>
-                                    <input type="password" id="pythia-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('pythia-key', this.value); pythiaApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Vicuna API Key</label>
-                                    <input type="password" id="vicuna-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('vicuna-key', this.value); vicunaApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 8px;">
-                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">MPT API Key</label>
-                                    <input type="password" id="mpt-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('mpt-key', this.value); mptApiKey = this.value;">
-                                </div>
+
+                                <style>
+                                    @keyframes slideDown {
+                                        from { transform: translateY(-20px); opacity: 0; }
+                                        to { transform: translateY(0); opacity: 1; }
+                                    }
+                                    
+                                    #api-selector:hover, #selected-api-key:hover {
+                                        transform: translateY(-2px);
+                                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                                        border-color: #007bff;
+                                    }
+                                    
+                                    #api-selector:focus, #selected-api-key:focus {
+                                        border-color: #007bff;
+                                        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+                                        outline: none;
+                                    }
+                                </style>
+                                    <div id="advanced-settings-close" style="text-align: center; margin-top: 20px; display: none;">
+                                        <button id="close-advanced-settings" style="
+                                            background: linear-gradient(135deg, #0066ff, #0044cc);
+                                            color: white;
+                                            border: none;
+                                            padding: 12px 28px;
+                                            border-radius: 8px;
+                                            cursor: pointer;
+                                            font-size: 15px;
+                                            font-weight: 500;
+                                            transition: all 0.3s ease;
+                                            box-shadow: 0 4px 12px rgba(0,102,255,0.3);
+                                            transform: translateY(0);
+                                            animation: buttonPop 0.3s ease-out;
+                                        ">
+                                            Close
+                                        </button>
+                                        <style>
+                                            #close-advanced-settings:hover {
+                                                transform: translateY(-2px);
+                                                box-shadow: 0 6px 16px rgba(0,102,255,0.4);
+                                                background: linear-gradient(135deg, #0077ff, #0055dd);
+                                            }
+                                            #close-advanced-settings:active {
+                                                transform: translateY(1px);
+                                                box-shadow: 0 2px 8px rgba(0,102,255,0.3);
+                                            }
+                                            @keyframes buttonPop {
+                                                0% { transform: scale(0.95); opacity: 0; }
+                                                70% { transform: scale(1.05); }
+                                                100% { transform: scale(1); opacity: 1; }
+                                            }
+                                        </style>
+                                    </div>
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function() {
-                                        const elements = [
-                                            "openai-key", "google-key", "claude-key", "openrouter-key",
-                                            "llama2-key", "mistral-key", "palm-key", "anthropic-key",
-                                            "falcon-key", "gptneo-key", "bloom-key", "opt-key",
-                                            "dolly-key", "stablelm-key", "pythia-key", "vicuna-key",
-                                            "mpt-key", "chatgpt-key-free"
-                                        ];
-                                        
-                                        elements.forEach(id => {
-                                            const element = document.getElementById(id);
-                                            if (element) {
-                                                element.value = localStorage.getItem(id) || "";
+                                        const apiSelector = document.getElementById("api-selector");
+                                        const apiKeyInput = document.getElementById("api-key-input");
+                                        const apiKeyLabel = document.getElementById("api-key-label");
+                                        const selectedApiKey = document.getElementById("selected-api-key");
+                                        const advancedPanel = document.getElementById("advanced-settings-panel");
+
+                                        apiSelector.addEventListener("change", function() {
+                                            const selected = this.value;
+                                            if (selected) {
+                                                apiKeyLabel.textContent = `🔑 ${this.options[this.selectedIndex].text} API Key`;
+                                                apiKeyInput.style.display = "block";
+                                                selectedApiKey.value = localStorage.getItem(`${selected}-key`) || "";
+                                                
+                                                selectedApiKey.onchange = function() {
+                                                    localStorage.setItem(`${selected}-key`, this.value);
+                                                    window[`${selected}ApiKey`] = this.value;
+                                                };
+                                            } else {
+                                                apiKeyInput.style.display = "none";
                                             }
                                         });
+
+                                        if (advancedPanel) {
+                                            advancedPanel.addEventListener("transitionend", function() {
+                                                if (this.style.display === "none") {
+                                                    this.style.opacity = "0";
+                                                }
+                                            });
+                                        }
                                     });
+
+                                    const advancedSettingsPanel = document.getElementById("advanced-settings-panel");
+                                    const advancedSettingsClose = document.getElementById("advanced-settings-close");
+
+                                    if (advancedSettingsPanel && advancedSettingsClose) {
+                                        const observer = new MutationObserver((mutations) => {
+                                            mutations.forEach((mutation) => {
+                                                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                                                    const isVisible = advancedSettingsPanel.style.display !== 'none';
+                                                    advancedSettingsClose.style.display = isVisible ? 'block' : 'none';
+                                                }
+                                            });
+                                        });
+
+                                        observer.observe(advancedSettingsPanel, {
+                                            attributes: true
+                                        });
+                                    }
                                 </script>
-                                <div style="text-align: center; margin-top: 20px;">
-                                    <button id="close-advanced-settings" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
-                                        Close
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
