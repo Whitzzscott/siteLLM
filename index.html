@@ -167,6 +167,7 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
         }
 
         @keyframes headerPulse {
@@ -376,6 +377,7 @@
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 outline: none;
                 animation: inputFadeIn 0.6s ease-out, typing 1s steps(20) infinite;
+                user-select: none;
             "
             placeholder="Type your message here..."
             required 
@@ -398,6 +400,7 @@
                 else if (pythiaIsSelected) pythia();
                 else if (vicunaIsSelected) vicuna();
                 else if (mptIsSelected) mpt();
+                else if (chatgptFreeIsSelected) chatgptFree();
                 else gpt();
             }"
         >
@@ -433,9 +436,109 @@
         </style>
 
         <div id="chatbar">
-            <button id="chatbarbuttonn"><</button>
-            <button id="Setting" style="border-radius: 8px; position: absolute; background-color: black; color: whitesmoke; left: 0; top: 1px; transition: transform 0.3s ease;"> <i class="fas fa-cog" style="transition: transform 0.3s ease;"></i> Setting</button>
-            <button id="Discord" onclick="window.location.href='https://test'" style="border-radius: 8px; position: absolute; background-color: #5865F2; color: whitesmoke; left: 100px; top: 1px; transition: transform 0.3s ease;"><i class="fab fa-discord" style="transition: transform 0.3s ease;"></i> Discord</button>
+            <button id="chatbarbuttonn" style="user-select: none;"><</button>
+            <h1 style="
+                color: black; 
+                font-size: 2rem; 
+                text-align: center; 
+                margin: 1rem 0;
+                text-shadow: 0 0 10px rgba(0,0,0,0.5);
+                font-family: 'Arial', sans-serif;
+                letter-spacing: 2px;
+                font-weight: 600;
+                animation: titleAnimation 2s ease-in-out infinite;
+                background: linear-gradient(45deg, #000, #333);
+                -webkit-background-clip: text;
+                background-clip: text;
+                transition: all 0.3s ease;
+                user-select: none;
+            ">SiteLLMS</h1>
+            <p style="
+                color: #1a1a1a;
+                font-size: 0.85rem;
+                text-align: center;
+                margin: 0.2rem auto;
+                font-family: 'Poppins', 'Segoe UI', sans-serif;
+                line-height: 1.4;
+                letter-spacing: 0.5px;
+                animation: inputFadeIn 1s ease-out, float 3s ease-in-out infinite;
+                transform: translateY(0);
+                max-width: 80%;
+                opacity: 0.9;
+                font-weight: 500;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+                user-select: none;
+            ">Experience powerful LLMs directly in your browser - fast, secure, and easy to use</p>
+            <p style="
+                color: #1a1a1a;
+                font-size: 0.8rem;
+                text-align: center;
+                margin: 0.5rem auto;
+                font-family: 'Poppins', 'Segoe UI', sans-serif;
+                opacity: 0.7;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+                animation: versionFadeIn 1s ease-out, float 3s ease-in-out infinite;
+                user-select: none;
+            ">Version 1.0</p>
+            <style>
+                @keyframes titleAnimation {
+                    0% {
+                        transform: scale(1);
+                        letter-spacing: 2px;
+                    }
+                    50% {
+                        transform: scale(1.05);
+                        letter-spacing: 3px;
+                    }
+                    100% {
+                        transform: scale(1);
+                        letter-spacing: 2px;
+                    }
+                }
+            </style>
+            <button id="Setting" style="
+                border-radius: 8px;
+                position: absolute;
+                background-color: black;
+                color: whitesmoke;
+                left: 0;
+                top: 450px;
+                transition: all 0.3s ease;
+                padding: 8px 12px;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                cursor: pointer;
+                backdrop-filter: blur(4px);
+            ">
+                <i class="fas fa-cog" style="
+                    transition: transform 0.3s ease;
+                    font-size: 1.2em;
+                "></i>
+            </button>
+            <button id="Discord" onclick="window.location.href='https://test'" style="
+                margin-left: 10px;
+                border-radius: 8px;
+                position: absolute;
+                background-color: #5865F2;
+                color: whitesmoke;
+                left: 35px;
+                top: 450px;
+                transition: all 0.3s ease;
+                padding: 8px 12px;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 2px 8px rgba(88,101,242,0.3);
+                cursor: pointer;
+                backdrop-filter: blur(4px);
+            ">
+                <i class="fab fa-discord" style="
+                    transition: transform 0.3s ease;
+                    font-size: 1.2em;
+                "></i>
+            </button>
         </div>
     </div>
     <div>
@@ -457,6 +560,7 @@
             else if (pythiaIsSelected) pythia();
             else if (vicunaIsSelected) vicuna();
             else if (mptIsSelected) mpt();
+            else if (chatgptFreeIsSelected) chatgptFree();
             else gpt();" 
             class="icon" 
             id="sendbuttoncss" 
@@ -484,7 +588,7 @@
             "></i>
         </button>
     </div>
-    <div id="chat-container" style="position: absolute; top: 150px; left: 550px; width: 500px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column;">
+    <div id="chat-container" style="position: absolute; top: 150px; left: 550px; width: 500px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; -ms-overflow-style: none;" onscroll="this.style.scrollbarWidth='none';">
         <div id="messages"></div>
         <div id="botmsg" style="display: none; color: white; padding: 10px; border-radius: 8px; background-color: #444; margin: 5px; max-width: 70%; word-wrap: break-word; text-overflow: ellipsis; overflow: hidden; position: relative;">
             <span style="position: absolute; top: 2px; right: 5px; font-size: 0.8em; color: #aaa;"></span>
@@ -598,6 +702,7 @@
                 else if (pythiaIsSelected) await pythia();
                 else if (vicunaIsSelected) await vicuna();
                 else if (mptIsSelected) await mpt();
+                else if (chatgptFreeIsSelected) await chatgptFree();
                 else await gpt();
 
                 typingIndicator.style.display = 'none';
@@ -650,6 +755,7 @@
                             <option value="pythia">EleutherAI/Pythia</option>
                             <option value="vicuna">LMSYS/Vicuna</option>
                             <option value="mpt">MosaicML/MPT</option>
+                            <option value="chatgpt-free">ChatGPT Free</option>
                         </select>
                     </div>
 
@@ -735,72 +841,72 @@
                             </button>
                         </div>
 
-                        <div id="advanced-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 750px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001;">
+                        <div id="advanced-settings-panel" style="display: none; position: absolute; background-color: #282828; width: 600px; height: 500px; border-radius: 8px; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1001;">
                             <h2 style="color: white; margin: 20px; text-align: center; font-size: 1.5rem; font-weight: 500;">Advanced Settings</h2>
                             <div class="settings-group" style="padding: 20px;">
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Llama2 API Key</label>
-                                    <input type="password" id="llama2-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('llama2-key', this.value); llama2ApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Llama2 API Key</label>
+                                    <input type="password" id="llama2-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('llama2-key', this.value); llama2ApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Mistral API Key</label>
-                                    <input type="password" id="mistral-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('mistral-key', this.value); mistralApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Mistral API Key</label>
+                                    <input type="password" id="mistral-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('mistral-key', this.value); mistralApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Google PaLM API Key</label>
-                                    <input type="password" id="palm-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('palm-key', this.value); palmApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Google PaLM API Key</label>
+                                    <input type="password" id="palm-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('palm-key', this.value); palmApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Anthropic API Key</label>
-                                    <input type="password" id="anthropic-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('anthropic-key', this.value); anthropicApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Anthropic API Key</label>
+                                    <input type="password" id="anthropic-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('anthropic-key', this.value); anthropicApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Falcon API Key</label>
-                                    <input type="password" id="falcon-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('falcon-key', this.value); falconApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Falcon API Key</label>
+                                    <input type="password" id="falcon-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('falcon-key', this.value); falconApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">GPT-Neo API Key</label>
-                                    <input type="password" id="gptneo-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('gptneo-key', this.value); gptNeoApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">GPT-Neo API Key</label>
+                                    <input type="password" id="gptneo-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('gptneo-key', this.value); gptNeoApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">BLOOM API Key</label>
-                                    <input type="password" id="bloom-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('bloom-key', this.value); bloomApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">BLOOM API Key</label>
+                                    <input type="password" id="bloom-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('bloom-key', this.value); bloomApiKey = this.value;">
+                                </div>
+
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">OPT API Key</label>
+                                    <input type="password" id="opt-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('opt-key', this.value); optApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">OPT API Key</label>
-                                    <input type="password" id="opt-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('opt-key', this.value); optApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Dolly API Key</label>
+                                    <input type="password" id="dolly-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('dolly-key', this.value); dollyApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Dolly API Key</label>
-                                    <input type="password" id="dolly-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('dolly-key', this.value); dollyApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">StableLM API Key</label>
+                                    <input type="password" id="stablelm-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('stablelm-key', this.value); stablelmApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">StableLM API Key</label>
-                                    <input type="password" id="stablelm-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('stablelm-key', this.value); stablelmApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Pythia API Key</label>
+                                    <input type="password" id="pythia-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('pythia-key', this.value); pythiaApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Pythia API Key</label>
-                                    <input type="password" id="pythia-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('pythia-key', this.value); pythiaApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">Vicuna API Key</label>
+                                    <input type="password" id="vicuna-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('vicuna-key', this.value); vicunaApiKey = this.value;">
                                 </div>
         
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">Vicuna API Key</label>
-                                    <input type="password" id="vicuna-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('vicuna-key', this.value); vicunaApiKey = this.value;">
-                                </div>
-        
-                                <div class="setting-item" style="margin-bottom: 15px;">
-                                    <label style="color: white; display: block; margin-bottom: 6px; font-size: 0.9rem;">MPT API Key</label>
-                                    <input type="password" id="mpt-key" style="width: 100%; padding: 6px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.9rem;" value="" onchange="localStorage.setItem('mpt-key', this.value); mptApiKey = this.value;">
+                                <div class="setting-item" style="margin-bottom: 8px;">
+                                    <label style="color: white; display: block; margin-bottom: 4px; font-size: 0.85rem;">MPT API Key</label>
+                                    <input type="password" id="mpt-key" style="width: 100%; padding: 4px; border-radius: 4px; background: #333; color: white; border: 1px solid #666; font-size: 0.85rem;" value="" onchange="localStorage.setItem('mpt-key', this.value); mptApiKey = this.value;">
                                 </div>
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function() {
@@ -809,7 +915,7 @@
                                             "llama2-key", "mistral-key", "palm-key", "anthropic-key",
                                             "falcon-key", "gptneo-key", "bloom-key", "opt-key",
                                             "dolly-key", "stablelm-key", "pythia-key", "vicuna-key",
-                                            "mpt-key"
+                                            "mpt-key", "chatgpt-key-free"
                                         ];
                                         
                                         elements.forEach(id => {
